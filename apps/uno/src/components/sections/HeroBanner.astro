@@ -3,48 +3,102 @@ import Button from "../ui/Button.astro";
 import { cn } from "../../utils/format";
 
 interface Props {
+  overline?: string;
   title: string;
   subtitle: string;
   image: string;
   imageAlt: string;
   ctaText: string;
   ctaUrl: string;
+  ctaSecondaryText?: string;
+  ctaSecondaryUrl?: string;
   alignment?: "left" | "center";
-  height?: "sm" | "md" | "lg";
+  height?: "sm" | "md" | "lg" | "screen";
 }
 
-const { title, subtitle, image, imageAlt, ctaText, ctaUrl, alignment = "left", height = "lg" } = Astro.props;
+const {
+  overline,
+  title,
+  subtitle,
+  image,
+  imageAlt,
+  ctaText,
+  ctaUrl,
+  ctaSecondaryText,
+  ctaSecondaryUrl,
+  alignment = "left",
+  height = "screen",
+} = Astro.props;
 
 const heightClasses: Record<string, string> = {
-  sm: "min-h-[400px]",
-  md: "min-h-[500px]",
-  lg: "min-h-[600px]",
+  sm: "min-h-[500px]",
+  md: "min-h-[650px]",
+  lg: "min-h-[800px]",
+  screen: "min-h-[90vh]",
 };
 ---
 
-<section class={cn("relative flex items-center overflow-hidden", heightClasses[height])}>
+<section class={cn("relative flex items-end overflow-hidden", heightClasses[height])}>
+  <!-- Background image -->
   <img
     src={image}
     alt={imageAlt}
     fetchpriority="high"
-    class="absolute inset-0 w-full h-full object-cover"
-    width={1600}
-    height={900}
+    class="absolute inset-0 w-full h-full object-cover scale-105 animate-[heroZoom_8s_ease-out_forwards]"
+    width={1800}
+    height={1200}
   />
-  <div class="absolute inset-0 bg-gradient-to-r from-black/60 to-black/20" />
-  <div class="relative container-page w-full">
-    <div class={cn("max-w-xl", alignment === "center" ? "mx-auto text-center" : "")}>
-      <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-normal text-white leading-tight">
+
+  <!-- Layered overlay for depth: darker at bottom for text readability, lighter at top -->
+  <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/10" />
+  <!-- Subtle bottom vignette for editorial feel -->
+  <div class="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/40 to-transparent" />
+
+  <!-- Content positioned at bottom for editorial lookbook feel -->
+  <div class="relative container-page w-full pb-16 md:pb-20 lg:pb-24">
+    <div class={cn("max-w-2xl", alignment === "center" ? "mx-auto text-center" : "")}>
+      {overline && (
+        <p class="text-white/60 text-xs md:text-sm uppercase tracking-[0.2em] mb-4 md:mb-6 font-sans">
+          {overline}
+        </p>
+      )}
+      <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-normal text-white leading-[1.05] tracking-tight">
         {title}
       </h1>
-      <p class="text-lg text-white/80 mt-4 leading-relaxed max-w-lg">
+      <p class="text-white/70 text-base md:text-lg mt-6 leading-relaxed max-w-lg font-sans">
         {subtitle}
       </p>
-      <div class="mt-8">
+      <div class={cn(
+        "mt-8 md:mt-10 flex flex-col sm:flex-row gap-3",
+        alignment === "center" ? "justify-center" : ""
+      )}>
         <Button tag="a" href={ctaUrl} variant="secondary" size="lg">
           {ctaText}
         </Button>
+        {ctaSecondaryText && ctaSecondaryUrl && (
+          <Button tag="a" href={ctaSecondaryUrl} variant="ghost" size="lg" class="text-white/90 hover:text-white border border-white/30 hover:bg-white/10 hover:border-white/60">
+            {ctaSecondaryText}
+          </Button>
+        )}
       </div>
     </div>
   </div>
+
+  <!-- Scroll indicator -->
+  <div class="absolute bottom-6 left-1/2 -translate-x-1/2 hidden md:block">
+    <div class="w-5 h-8 rounded-full border border-white/20 flex items-start justify-center p-1">
+      <div class="w-1 h-2 rounded-full bg-white/40 animate-[scrollPulse_2s_ease-in-out_infinite]" />
+    </div>
+  </div>
 </section>
+
+<style is:global>
+  @keyframes heroZoom {
+    from { transform: scale(1.05); }
+    to { transform: scale(1); }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { transform: translateY(0); opacity: 0.4; }
+    50% { transform: translateY(8px); opacity: 1; }
+  }
+</style>
