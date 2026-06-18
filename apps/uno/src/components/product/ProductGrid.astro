@@ -1,0 +1,45 @@
+---
+import type { Product } from "../../data/types";
+import ProductCard from "./ProductCard.astro";
+import { cn } from "../../utils/format";
+
+interface Props {
+  products: Product[];
+  columns?: 2 | 3 | 4;
+  showRating?: boolean;
+  aspectRatio?: "1/1" | "4/5" | "3/4";
+  class?: string;
+}
+
+const {
+  products,
+  columns = 4,
+  showRating = true,
+  aspectRatio = "4/5",
+  class: className,
+} = Astro.props;
+
+const gridCols: Record<number, string> = {
+  2: "grid-cols-1 sm:grid-cols-2",
+  3: "grid-cols-2 lg:grid-cols-3",
+  4: "grid-cols-2 md:grid-cols-3 lg:grid-cols-4",
+};
+---
+
+{
+  products.length > 0 ? (
+    <div class={cn("grid gap-x-4 gap-y-8", gridCols[columns], className)}>
+      {products.map((product) => (
+        <ProductCard
+          product={product}
+          showRating={showRating}
+          aspectRatio={aspectRatio}
+        />
+      ))}
+    </div>
+  ) : (
+    <div class="text-center py-16">
+      <p class="text-base-300 text-lg">No products found.</p>
+    </div>
+  )
+}

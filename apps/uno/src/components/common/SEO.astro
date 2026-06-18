@@ -1,0 +1,46 @@
+---
+import type { SEOData } from "../../data/types";
+
+interface Props extends SEOData {
+  type?: "website" | "product" | "article";
+  canonicalURL?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  image,
+  type = "website",
+  canonicalURL,
+  noindex = false,
+} = Astro.props;
+
+const siteName = "elora";
+const fullTitle = title.includes(siteName) ? title : `${title} — ${siteName}`;
+const ogImage = image || "/favicon.svg";
+const canonical = canonicalURL || new URL(Astro.url.pathname, Astro.url).href;
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+
+<!-- Open Graph -->
+<meta property="og:type" content={type} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:url" content={canonical} />
+<meta property="og:site_name" content={siteName} />
+
+<!-- Twitter -->
+<meta name="twitter:card" content={image ? "summary_large_image" : "summary"} />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+{image && <meta name="twitter:image" content={image} />}
+
+<!-- Canonical -->
+<link rel="canonical" href={canonical} />
+
+<!-- Robots -->
+{noindex && <meta name="robots" content="noindex, follow" />}

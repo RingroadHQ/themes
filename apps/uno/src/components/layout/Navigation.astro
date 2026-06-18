@@ -1,0 +1,96 @@
+---
+import type { NavLink } from "../../data/types";
+import Icon from "../ui/Icon.astro";
+import { cn } from "../../utils/format";
+
+interface Props {
+  links: NavLink[];
+  variant?: "desktop" | "footer";
+  class?: string;
+}
+
+const { links, variant = "desktop", class: className } = Astro.props;
+
+const currentPath = Astro.url.pathname;
+
+function isActive(url: string): boolean {
+  if (url === "/") return currentPath === "/";
+  return currentPath.startsWith(url);
+}
+---
+
+{
+  variant === "footer" ? (
+    <ul class={cn("flex flex-col gap-2", className)}>
+      {links.map((link) => (
+        <li>
+          {link.children && link.children.length > 0 ? (
+            <>
+              <span class="text-sm font-semibold text-base-content mb-2 block">
+                {link.title}
+              </span>
+              <ul class="flex flex-col gap-1.5 mt-2">
+                {link.children.map((child) => (
+                  <li>
+                    <a
+                      href={child.url}
+                      class="text-sm text-base-300 hover:text-base-content transition-colors"
+                    >
+                      {child.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <a
+              href={link.url}
+              class="text-sm font-semibold text-base-content hover:opacity-80 transition-colors"
+            >
+              {link.title}
+            </a>
+          )}
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <nav aria-label="Main navigation" class={cn("hidden lg:block", className)}>
+      <ul class="flex items-center gap-1">
+        {links.map((link) => (
+          <li class="relative group">
+            <a
+              href={link.children ? link.children[0]?.url || link.url : link.url}
+              class={cn(
+                "flex items-center gap-1 px-3 py-2 text-sm rounded-md transition-colors",
+                isActive(link.url)
+                  ? "text-primary font-medium bg-base-200"
+                  : "text-base-content hover:bg-base-200"
+              )}
+            >
+              {link.title}
+              {link.children && link.children.length > 0 && (
+                <Icon name="chevronDown" size="sm" />
+              )}
+            </a>
+            {link.children && link.children.length > 0 && (
+              <ul
+                class="absolute top-full left-0 mt-1 w-52 bg-base-100 border border-base-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 py-1"
+              >
+                {link.children.map((child) => (
+                  <li>
+                    <a
+                      href={child.url}
+                      class="block px-4 py-2 text-sm text-base-content hover:bg-base-200 transition-colors"
+                    >
+                      {child.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}

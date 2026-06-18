@@ -1,0 +1,156 @@
+---
+import type { Product } from "../../data/types";
+import Price from "../ui/Price.astro";
+import QuantitySelector from "../ui/QuantitySelector.astro";
+import Button from "../ui/Button.astro";
+import Icon from "../ui/Icon.astro";
+import ProductVariantPicker from "./ProductVariantPicker.astro";
+import { cn } from "../../utils/format";
+
+interface Props {
+  product: Product;
+  class?: string;
+}
+
+const { product, class: className } = Astro.props;
+
+const defaultOptions: Record<string, string> = {};
+for (const opt of product.options) {
+  defaultOptions[opt.name] = opt.values[0];
+}
+---
+
+<div class={cn("space-y-6", className)} data-product-form>
+  <!-- Price -->
+  <div>
+    <Price
+      price={product.priceRange.min}
+      compareAtPrice={product.compareAtPriceRange?.min}
+      size="lg"
+    />
+    {product.compareAtPriceRange && (
+      <p class="text-sm text-success mt-1 font-medium">
+        You save {Math.round((1 - product.priceRange.min / product.compareAtPriceRange.min) * 100)}%
+      </p>
+    )}
+  </div>
+
+  <!-- Variant picker -->
+  <ProductVariantPicker
+    options={product.options}
+    selectedOptions={defaultOptions}
+    onSelect={(name: string, value: string) => {}}
+  />
+
+  <!-- Quantity + Add to Cart -->
+  <div class="flex flex-col sm:flex-row gap-4 pt-2">
+    <QuantitySelector name="quantity" value={1} min={1} max={10} size="md" />
+    <Button
+      type="submit"
+      variant="primary"
+      size="lg"
+      fullWidth
+      disabled={!product.available}
+      class="flex-1"
+      data-add-to-cart
+    >
+      <Icon name="cart" size="sm" />
+      {product.available ? "Add to Cart" : "Sold Out"}
+    </Button>
+  </div>
+
+  <!-- Product meta -->
+  <div class="border-t border-base-200 pt-4 space-y-2 text-sm">
+    <div class="flex items-center gap-2 text-base-300">
+      <Icon name="truck" size="sm" />
+      <span>Free shipping on orders over $75</span>
+    </div>
+    <div class="flex items-center gap-2 text-base-300">
+      <Icon name="shield" size="sm" />
+      <span>Lifetime guarantee</span>
+    </div>
+    <div class="flex items-center gap-2 text-base-300">
+      <Icon name="package" size="sm" />
+      <span>30-day easy returns</span>
+    </div>
+  </div>
+
+  <!-- SKU and tags -->
+  {product.variants.length > 0 && (
+    <div class="text-xs text-base-300 space-y-1">
+      <p>SKU: {product.variants[0].sku}</p>
+      {product.tags.length > 0 && (
+        <p>Tags: {product.tags.join(", ")}</p>
+      )}
+    </div>
+  )}
+</div>
+
+<script>
+  // Handle variant selection and add to cart
+  document.querySelectorAll<HTMLElement>("[data-product-form]").forEach((form) => {
+    const variantPicker = form.querySelector<HTMLElement>("[data-variant-picker]");
+    const addBtn = form.querySelector<HTMLButtonElement>("[data-add-to-cart]");
+    const qtyInput = form.querySelector<HTMLInputElement>("input[name='quantity']");
+
+    let selectedOptions: Record<string, string> = JSON.parse('{JSON.stringify(defaultOptions)}');
+
+    variantPicker?.addEventListener("variant-change", ((e: CustomEvent) => {
+      selectedOptions[e.detail.name] = e.detail.value;
+
+      // Update the legend display
+      const legends = variantPicker.querySelectorAll("legend");
+      legends.forEach((legend) => {
+        const optName = legend.textContent?.split(":")[0];
+        if (optName) {
+          const val = selectedOptions[optName.trim()] || "Select";
+          const span = legend.querySelector("span");
+          if (span) span.textContent = val;
+        }
+      });
+    }) as EventListener);
+
+    addBtn?.addEventListener("click", async () => {
+      if (!product.available) return;
+
+      // Find matching variant
+      const variantTitle = Object.values(selectedOptions).join(" / ");
+      const variant = product.variants.find(
+        (v: any) => v.title === variantTitle
+      ) || product.variants[0];
+
+      const quantity = parseInt(qtyInput?.value || "1");
+
+      const { addItem } = await import("../../store/cart");
+      const { openCart } = await import("../../store/ui");
+
+      const image = product.images[0];
+
+      await addItem(variant.id, quantity, {
+        productId: product.id,
+        handle: product.handle,
+        title: product.title,
+        variantTitle: variant.title,
+        image: {
+          id: image.id,
+          src: image.src,
+          alt: image.alt,
+          width: image.width,
+          height: image.height,
+          position: 0,
+        },
+        price: variant.price,
+      });
+
+      // Show feedback
+      addBtn.textContent = "Added!";
+      addBtn.classList.add("bg-success", "!border-success");
+      setTimeout(() => {
+        addBtn.innerHTML = '<svg><!-- cart icon --></svg> Add to Cart';
+        addBtn.classList.remove("bg-success", "!border-success");
+      }, 1500);
+
+      openCart();
+    });
+  });
+</script>

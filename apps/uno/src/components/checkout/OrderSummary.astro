@@ -1,0 +1,61 @@
+---
+import type { CartItem } from "../../data/types";
+import { formatPrice } from "../../utils/format";
+import { cn } from "../../utils/format";
+
+interface Props {
+  items: CartItem[];
+  subtotal: number;
+  shipping: number;
+  tax: number;
+  total: number;
+  class?: string;
+}
+
+const { items, subtotal, shipping, tax, total, class: className } = Astro.props;
+---
+
+<div class={cn("bg-base-200 rounded-lg p-6 space-y-4", className)}>
+  <h3 class="text-lg font-heading font-bold text-base-content">Order Summary</h3>
+
+  <div class="space-y-3 max-h-64 overflow-y-auto">
+    {items.map((item) => (
+      <div class="flex gap-3">
+        <img
+          src={item.image.src}
+          alt={item.image.alt}
+          class="w-14 h-14 rounded-md object-cover bg-base-300 flex-shrink-0"
+          width={item.image.width}
+          height={item.image.height}
+        />
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-medium text-base-content line-clamp-1">{item.title}</p>
+          <p class="text-xs text-base-300">{item.variantTitle} × {item.quantity}</p>
+          <p class="text-sm font-medium mt-0.5">{formatPrice(item.price * item.quantity)}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <div class="border-t border-base-300 pt-3 space-y-1.5 text-sm">
+    <div class="flex justify-between">
+      <span class="text-base-300">Subtotal</span>
+      <span>{formatPrice(subtotal)}</span>
+    </div>
+    <div class="flex justify-between">
+      <span class="text-base-300">Shipping</span>
+      <span class={shipping === 0 ? "text-success" : ""}>
+        {shipping === 0 ? "Free" : formatPrice(shipping)}
+      </span>
+    </div>
+    <div class="flex justify-between">
+      <span class="text-base-300">Tax</span>
+      <span>{formatPrice(tax)}</span>
+    </div>
+  </div>
+
+  <div class="border-t border-base-300 pt-3 flex justify-between text-base font-bold">
+    <span>Total</span>
+    <span>{formatPrice(total)}</span>
+  </div>
+</div>

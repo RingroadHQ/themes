@@ -1,0 +1,70 @@
+---
+import Button from "../ui/Button.astro";
+import { cn } from "../../utils/format";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class={cn("bg-base-200 rounded-xl p-8 md:p-10", className)}>
+  <div class="max-w-lg mx-auto text-center">
+    <h3 class="text-2xl font-heading font-bold text-base-content mb-2">
+      Join our newsletter
+    </h3>
+    <p class="text-base-300 text-sm mb-6">
+      Get early access to new releases, exclusive offers, and leather care tips.
+    </p>
+    <form class="flex flex-col sm:flex-row gap-3" data-newsletter-form>
+      <input
+        type="email"
+        name="email"
+        placeholder="Enter your email"
+        required
+        class="flex-1 px-4 py-2.5 rounded-md border border-base-300 bg-base-100 text-sm text-base-content placeholder:text-base-300 focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
+        aria-label="Email address"
+      />
+      <Button type="submit" variant="primary">
+        Subscribe
+      </Button>
+    </form>
+    <p class="text-xs text-base-300 mt-3" data-newsletter-message></p>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>("[data-newsletter-form]").forEach((form) => {
+    const messageEl = form.querySelector<HTMLParagraphElement>("[data-newsletter-message]");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = form.email.value;
+
+      if (!email || !email.includes("@")) {
+        if (messageEl) {
+          messageEl.textContent = "Please enter a valid email address.";
+          messageEl.className = "text-xs text-error mt-3";
+        }
+        return;
+      }
+
+      // Simulate API call
+      const btn = form.querySelector("button") as HTMLButtonElement;
+      btn.disabled = true;
+      btn.textContent = "Subscribing...";
+
+      await new Promise((r) => setTimeout(r, 500));
+
+      btn.disabled = false;
+      btn.textContent = "Subscribe";
+      form.reset();
+
+      if (messageEl) {
+        messageEl.textContent = "Thanks for subscribing! Check your inbox.";
+        messageEl.className = "text-xs text-success mt-3";
+      }
+    });
+  });
+</script>

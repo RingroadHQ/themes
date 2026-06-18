@@ -1,0 +1,95 @@
+---
+import type { ProductImage } from "../../data/types";
+import { cn } from "../../utils/format";
+
+interface Props {
+  images: ProductImage[];
+  class?: string;
+}
+
+const { images, class: className } = Astro.props;
+
+if (images.length === 0) return;
+
+const imagesJson = JSON.stringify(images.map(({ src, alt }) => ({ src, alt })));
+---
+
+<div
+  class={cn("flex flex-col-reverse md:flex-row gap-4", className)}
+  data-product-gallery
+>
+  <!-- Thumbnails (vertical on desktop, horizontal on mobile) -->
+  <div
+    class="flex md:flex-col gap-2 overflow-x-auto md:overflow-y-auto md:max-h-[500px] flex-shrink-0"
+    data-thumbnails
+  >
+    {images.map((img, i) => (
+      <button
+        type="button"
+        data-thumbnail-index={i}
+        class={cn(
+          "flex-shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-md overflow-hidden border-2 transition-colors",
+          i === 0 ? "border-primary" : "border-transparent hover:border-base-300"
+        )}
+        aria-label={`View image ${i + 1}`}
+      >
+        <img
+          src={img.src}
+          alt={img.alt}
+          width={img.width}
+          height={img.height}
+          loading="lazy"
+          class="w-full h-full object-cover"
+        />
+      </button>
+    ))}
+  </div>
+
+  <!-- Main image -->
+  <div class="flex-1 relative overflow-hidden rounded-lg bg-base-200" data-main-image-container>
+    <img
+      src={images[0].src}
+      alt={images[0].alt}
+      width={images[0].width}
+      height={images[0].height}
+      fetchpriority="high"
+      class="w-full h-full object-cover transition-opacity duration-300"
+      data-main-image
+      style="aspect-ratio: 4/5;"
+    />
+    <!-- Zoom lens (desktop) -->
+    <div
+      class="hidden md:block absolute inset-0 opacity-0 hover:opacity-100 transition-opacity pointer-events-none"
+      data-zoom-lens
+    ></div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-product-gallery]").forEach((gallery) => {
+    const mainImg = gallery.querySelector<HTMLImageElement>("[data-main-image]");
+    const thumbnails = gallery.querySelectorAll<HTMLButtonElement>("[data-thumbnail-index]");
+    const imageList: { src: string; alt: string }[] = {imagesJson};
+
+    thumbnails.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const idx = parseInt(btn.dataset.thumbnailIndex || "0");
+        const img = imageList[idx];
+        if (mainImg && img) {
+          mainImg.style.opacity = "0";
+          setTimeout(() => {
+            mainImg.src = img.src;
+            mainImg.alt = img.alt;
+            mainImg.style.opacity = "1";
+          }, 150);
+        }
+        thumbnails.forEach((b) => {
+          b.classList.remove("border-primary");
+          b.classList.add("border-transparent");
+        });
+        btn.classList.remove("border-transparent");
+        btn.classList.add("border-primary");
+      });
+    });
+  });
+</script>

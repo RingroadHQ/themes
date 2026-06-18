@@ -1,0 +1,45 @@
+---
+import type { CartItem as CartItemType } from "../../data/types";
+import { formatPrice } from "../../utils/format";
+import QuantitySelector from "../ui/QuantitySelector.astro";
+import Icon from "../ui/Icon.astro";
+import { cn } from "../../utils/format";
+
+interface Props {
+  item: CartItemType;
+  class?: string;
+}
+
+const { item, class: className } = Astro.props;
+---
+
+<div class={cn("flex gap-4 py-4 border-b border-base-200", className)}>
+  <a href={`/products/${item.handle}`} class="flex-shrink-0">
+    <img
+      src={item.image.src}
+      alt={item.image.alt}
+      width={item.image.width}
+      height={item.image.height}
+      class="w-24 h-24 rounded-md object-cover bg-base-200"
+      loading="lazy"
+    />
+  </a>
+  <div class="flex-1 min-w-0">
+    <a href={`/products/${item.handle}`} class="text-sm font-medium text-base-content hover:underline line-clamp-1">
+      {item.title}
+    </a>
+    <p class="text-xs text-base-300 mt-0.5">{item.variantTitle}</p>
+    <p class="text-sm font-medium mt-2">{formatPrice(item.price)}</p>
+    <div class="flex items-center justify-between mt-2">
+      <QuantitySelector value={item.quantity} min={1} max={item.maxQuantity} size="sm" data-cart-item-id={item.id} />
+      <button
+        type="button"
+        class="p-1 text-base-300 hover:text-error transition-colors"
+        aria-label={`Remove ${item.title} from cart`}
+        data-remove-item={item.id}
+      >
+        <Icon name="trash" size="sm" />
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,84 @@
+---
+import type { NavLink } from "../../data/types";
+import type { ThemeConfig } from "../../data/types";
+import Icon from "../ui/Icon.astro";
+import Navigation from "./Navigation.astro";
+import Newsletter from "../common/Newsletter.astro";
+
+interface Props {
+  navigation: NavLink[];
+  social: ThemeConfig["social"];
+  footer: ThemeConfig["footer"];
+}
+
+const { navigation, social, footer } = Astro.props;
+
+const socialLinks = [
+  { key: "instagram", label: "Instagram", icon: "instagram" as const },
+  { key: "facebook", label: "Facebook", icon: "facebook" as const },
+  { key: "twitter", label: "Twitter", icon: "twitter" as const },
+  { key: "pinterest", label: "Pinterest", icon: "pinterest" as const },
+  { key: "tiktok", label: "TikTok", icon: "tiktok" as const },
+] as const;
+---
+
+<footer class="bg-base-200 border-t border-base-300">
+  <div class="container-page py-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+      <!-- Brand column -->
+      <div class="lg:col-span-1">
+        <a href="/" class="text-xl font-heading font-bold text-primary">
+          elora
+        </a>
+        <p class="text-sm text-base-300 mt-2 max-w-xs">
+          Handcrafted leather wallets made to last a lifetime. Premium materials, timeless design.
+        </p>
+        {socialLinks.some((s) => social[s.key]) && (
+          <div class="flex items-center gap-3 mt-4">
+            {socialLinks.map(
+              (s) =>
+                social[s.key] && (
+                  <a
+                    href={social[s.key]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="p-1.5 rounded-md text-base-300 hover:text-base-content hover:bg-base-300/30 transition-colors"
+                    aria-label={s.label}
+                  >
+                    <Icon name={s.icon} size="sm" />
+                  </a>
+                )
+            )}
+          </div>
+        )}
+      </div>
+
+      <!-- Navigation columns -->
+      <div class="lg:col-span-2 grid grid-cols-2 sm:grid-cols-3 gap-8">
+        <Navigation links={navigation} variant="footer" />
+      </div>
+
+      <!-- Newsletter column -->
+      {footer.newsletter && (
+        <div class="lg:col-span-2">
+          <Newsletter class="h-full bg-base-100" />
+        </div>
+      )}
+    </div>
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="border-t border-base-300">
+    <div class="container-page py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p class="text-sm text-base-300">{footer.copyright}</p>
+      {footer.paymentIcons && (
+        <div class="flex items-center gap-2 text-base-300 text-xs">
+          <span class="px-2 py-1 border border-base-300 rounded text-xs font-mono">VISA</span>
+          <span class="px-2 py-1 border border-base-300 rounded text-xs font-mono">MC</span>
+          <span class="px-2 py-1 border border-base-300 rounded text-xs font-mono">AMEX</span>
+          <span class="px-2 py-1 border border-base-300 rounded text-xs font-mono">APPLE PAY</span>
+        </div>
+      )}
+    </div>
+  </div>
+</footer>

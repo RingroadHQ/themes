@@ -1,0 +1,48 @@
+---
+import { formatPrice } from "../../utils/format";
+import { cn } from "../../utils/format";
+
+interface Props {
+  subtotal: number;
+  itemCount: number;
+  class?: string;
+}
+
+const { subtotal, itemCount, class: className } = Astro.props;
+
+const shippingEstimate = subtotal >= 75 ? 0 : 5.99;
+const taxEstimate = Math.round(subtotal * 0.08 * 100) / 100;
+const total = Math.round((subtotal + shippingEstimate + taxEstimate) * 100) / 100;
+---
+
+<div class={cn("bg-base-200 rounded-lg p-6 space-y-4", className)}>
+  <h3 class="text-lg font-heading font-bold text-base-content">Order Summary</h3>
+
+  <div class="space-y-2 text-sm">
+    <div class="flex justify-between">
+      <span class="text-base-300">Subtotal ({itemCount} items)</span>
+      <span class="text-base-content">{formatPrice(subtotal)}</span>
+    </div>
+    <div class="flex justify-between">
+      <span class="text-base-300">Shipping</span>
+      <span class={shippingEstimate === 0 ? "text-success" : "text-base-content"}>
+        {shippingEstimate === 0 ? "Free" : formatPrice(shippingEstimate)}
+      </span>
+    </div>
+    <div class="flex justify-between">
+      <span class="text-base-300">Estimated Tax</span>
+      <span class="text-base-content">{formatPrice(taxEstimate)}</span>
+    </div>
+  </div>
+
+  <div class="border-t border-base-300 pt-3 flex justify-between text-base font-semibold">
+    <span class="text-base-content">Total</span>
+    <span class="text-base-content">{formatPrice(total)}</span>
+  </div>
+
+  {subtotal < 75 && subtotal > 0 && (
+    <p class="text-xs text-base-300">
+      Add {formatPrice(75 - subtotal)} more for free shipping!
+    </p>
+  )}
+</div>

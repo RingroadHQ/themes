@@ -1,0 +1,53 @@
+---
+import Icon from "../ui/Icon.astro";
+import { ANNOUNCEMENT_DISMISSED_KEY } from "../../utils/constants";
+
+interface Props {
+  enabled: boolean;
+  text: string;
+  link: string | null;
+}
+
+const { enabled, text, link } = Astro.props;
+
+if (!enabled) return;
+---
+
+<div
+  id="announcement-bar"
+  class="relative bg-primary text-primary-content text-sm text-center py-2 px-4"
+  role="banner"
+>
+  <div class="container-page flex items-center justify-center gap-2">
+    {link ? (
+      <a href={link} class="hover:underline underline-offset-2">
+        {text}
+      </a>
+    ) : (
+      <span>{text}</span>
+    )}
+    <button
+      id="announcement-close"
+      class="absolute right-3 p-0.5 rounded hover:bg-white/10 transition-colors"
+      aria-label="Dismiss announcement"
+    >
+      <Icon name="close" size="sm" />
+    </button>
+  </div>
+</div>
+
+<script>
+  const bar = document.getElementById("announcement-bar");
+  const closeBtn = document.getElementById("announcement-close");
+
+  if (bar && closeBtn) {
+    if (sessionStorage.getItem("{ANNOUNCEMENT_DISMISSED_KEY}") === "true") {
+      bar.style.display = "none";
+    }
+
+    closeBtn.addEventListener("click", () => {
+      bar.style.display = "none";
+      sessionStorage.setItem("{ANNOUNCEMENT_DISMISSED_KEY}", "true");
+    });
+  }
+</script>

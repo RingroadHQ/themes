@@ -1,0 +1,66 @@
+---
+import { cn } from "../../utils/format";
+import Icon from "./Icon.astro";
+
+interface Props {
+  id: string;
+  title?: string;
+  size?: "sm" | "md" | "lg";
+  class?: string;
+}
+
+const { id, title, size = "md", class: className } = Astro.props;
+
+const sizeClasses: Record<string, string> = {
+  sm: "max-w-sm",
+  md: "max-w-lg",
+  lg: "max-w-2xl",
+};
+---
+
+<dialog
+  id={id}
+  class={cn(
+    "fixed inset-0 m-auto bg-base-100 rounded-xl shadow-2xl p-0 border border-base-300",
+    "backdrop:bg-black/50 backdrop:backdrop-blur-sm",
+    "open:flex open:flex-col",
+    sizeClasses[size],
+    "w-[calc(100%-2rem)]",
+    className
+  )}
+>
+  <div class="flex items-center justify-between p-4 border-b border-base-200">
+    {title && <h2 class="text-lg font-heading font-bold text-base-content">{title}</h2>}
+    <form method="dialog" class="ml-auto">
+      <button
+        type="submit"
+        class="p-1 rounded-md text-base-content hover:bg-base-200 transition-colors"
+        aria-label="Close dialog"
+      >
+        <Icon name="close" size="md" />
+      </button>
+    </form>
+  </div>
+  <div class="p-4 overflow-y-auto">
+    <slot />
+  </div>
+</dialog>
+
+<script>
+  const dialog = document.getElementById("{id}") as HTMLDialogElement | null;
+  if (dialog) {
+    // Close on backdrop click
+    dialog.addEventListener("click", (e) => {
+      if (e.target === dialog) {
+        dialog.close();
+      }
+    });
+
+    // Close on Escape (built-in, but ensure it works)
+    dialog.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        dialog.close();
+      }
+    });
+  }
+</script>

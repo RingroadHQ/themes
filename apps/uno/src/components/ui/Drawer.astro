@@ -1,0 +1,116 @@
+---
+import { cn } from "../../utils/format";
+import Icon from "./Icon.astro";
+
+interface Props {
+  id: string;
+  title?: string;
+  position?: "left" | "right";
+  class?: string;
+}
+
+const { id, title, position = "right", class: className } = Astro.props;
+
+const positionClasses: Record<string, string> = {
+  left: "left-0",
+  right: "right-0",
+};
+---
+
+<div
+  id={id}
+  class={cn("fixed inset-0 z-50 invisible", className)}
+  data-drawer
+  aria-hidden="true"
+>
+  <!-- Backdrop -->
+  <div
+    class="absolute inset-0 bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-300"
+    data-drawer-backdrop
+  ></div>
+  <!-- Panel -->
+  <div
+    class={cn(
+      "absolute top-0 h-full w-full max-w-md bg-base-100 shadow-2xl flex flex-col",
+      "transform transition-transform duration-300",
+      position === "left" ? "-translate-x-full" : "translate-x-full",
+      positionClasses[position]
+    )}
+    data-drawer-panel
+  >
+    <div class="flex items-center justify-between p-4 border-b border-base-200">
+      {title && <h2 class="text-lg font-heading font-bold text-base-content">{title}</h2>}
+      <button
+        type="button"
+        data-drawer-close
+        class="p-1 rounded-md text-base-content hover:bg-base-200 transition-colors ml-auto"
+        aria-label="Close drawer"
+      >
+        <Icon name="close" size="md" />
+      </button>
+    </div>
+    <div class="flex-1 overflow-y-auto p-4">
+      <slot />
+    </div>
+  </div>
+</div>
+
+<script>
+  function initDrawer(id: string) {
+    const drawer = document.getElementById(id);
+    if (!drawer) return;
+
+    const backdrop = drawer.querySelector<HTMLElement>("[data-drawer-backdrop]");
+    const panel = drawer.querySelector<HTMLElement>("[data-drawer-panel]");
+    const closeBtn = drawer.querySelector<HTMLElement>("[data-drawer-close]");
+
+    let isOpen = false;
+
+    function open() {
+      isOpen = true;
+      drawer!.setAttribute("aria-hidden", "false");
+      drawer!.classList.remove("invisible");
+      document.body.style.overflow = "hidden";
+      requestAnimationFrame(() => {
+        backdrop!.classList.remove("opacity-0");
+        panel!.classList.remove(position === "left" ? "-translate-x-full" : "translate-x-full");
+        panel!.classList.add("translate-x-0");
+      });
+      drawer!.dispatchEvent(new CustomEvent("drawer:open"));
+    }
+
+    function close() {
+      isOpen = false;
+      backdrop!.classList.add("opacity-0");
+      panel!.classList.remove("translate-x-0");
+      panel!.classList.add(position === "left" ? "-translate-x-full" : "translate-x-full");
+      document.body.style.overflow = "";
+      setTimeout(() => {
+        drawer!.classList.add("invisible");
+        drawer!.setAttribute("aria-hidden", "true");
+      }, 300);
+      drawer!.dispatchEvent(new CustomEvent("drawer:close"));
+    }
+
+    function toggle() {
+      isOpen ? close() : open();
+    }
+
+    backdrop?.addEventListener("click", close);
+    closeBtn?.addEventListener("click", close);
+
+    // Expose API
+    (drawer as any).__drawer = { open, close, toggle, get isOpen() { return isOpen; } };
+  }
+
+  const position = "{position}";
+  document.querySelectorAll<HTMLElement>("[data-drawer]").forEach((el) => {
+    if (el.id) initDrawer(el.id);
+  });
+
+  // Expose open/close on window for easy access
+  function getDrawer(id: string) {
+    const el = document.getElementById(id);
+    return el ? (el as any).__drawer : null;
+  }
+</script>

@@ -1,0 +1,71 @@
+---
+import { cn } from "../../utils/format";
+import Icon from "../ui/Icon.astro";
+
+interface Props {
+  currentPage: number;
+  totalPages: number;
+  baseUrl: string;
+  class?: string;
+}
+
+const { currentPage, totalPages, baseUrl, class: className } = Astro.props;
+
+if (totalPages <= 1) return;
+
+// Build page links with ellipsis
+const pages: (number | "...")[] = [];
+for (let i = 1; i <= totalPages; i++) {
+  if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+    pages.push(i);
+  } else if (pages[pages.length - 1] !== "...") {
+    pages.push("...");
+  }
+}
+---
+
+<nav aria-label="Pagination" class={cn("flex items-center justify-center gap-1", className)}>
+  {currentPage > 1 && (
+    <a
+      href={`${baseUrl}?page=${currentPage - 1}`}
+      class="flex items-center gap-1 px-3 py-2 text-sm text-base-content hover:bg-base-200 rounded-md transition-colors"
+      aria-label="Previous page"
+    >
+      <Icon name="chevronLeft" size="sm" />
+      <span class="hidden sm:inline">Previous</span>
+    </a>
+  )}
+
+  <div class="flex items-center gap-1">
+    {pages.map((page) =>
+      page === "..." ? (
+        <span class="px-2 text-base-300">…</span>
+      ) : (
+        <a
+          href={`${baseUrl}?page=${page}`}
+          class={cn(
+            "w-9 h-9 flex items-center justify-center text-sm rounded-md transition-colors",
+            page === currentPage
+              ? "bg-primary text-primary-content font-medium"
+              : "text-base-content hover:bg-base-200"
+          )}
+          aria-current={page === currentPage ? "page" : undefined}
+          aria-label={`Page ${page}`}
+        >
+          {page}
+        </a>
+      )
+    )}
+  </div>
+
+  {currentPage < totalPages && (
+    <a
+      href={`${baseUrl}?page=${currentPage + 1}`}
+      class="flex items-center gap-1 px-3 py-2 text-sm text-base-content hover:bg-base-200 rounded-md transition-colors"
+      aria-label="Next page"
+    >
+      <span class="hidden sm:inline">Next</span>
+      <Icon name="chevronRight" size="sm" />
+    </a>
+  )}
+</nav>

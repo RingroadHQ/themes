@@ -1,0 +1,52 @@
+---
+import ProductGrid from "../product/ProductGrid.astro";
+import Button from "../ui/Button.astro";
+import { getProducts } from "../../data/api/products";
+import { cn } from "../../utils/format";
+
+interface Props {
+  title: string;
+  description?: string;
+  collectionHandle: string;
+  limit?: number;
+  ctaText?: string;
+  class?: string;
+}
+
+const { title, description, collectionHandle, limit = 8, ctaText, class: className } = Astro.props;
+
+const { products } = await getProducts({
+  collection: collectionHandle,
+  limit,
+});
+---
+
+<section class={cn("container-page section", className)}>
+  <div class="flex items-end justify-between mb-8">
+    <div>
+      <h2 class="text-2xl md:text-3xl font-heading font-bold text-base-content">{title}</h2>
+      {description && (
+        <p class="text-base-300 mt-2 max-w-lg">{description}</p>
+      )}
+    </div>
+    {ctaText && (
+      <Button
+        tag="a"
+        href={`/collections/${collectionHandle}`}
+        variant="ghost"
+        size="sm"
+        class="hidden sm:flex shrink-0"
+      >
+        {ctaText}
+      </Button>
+    )}
+  </div>
+  <ProductGrid products={products} columns={4} showRating={false} />
+  {ctaText && (
+    <div class="mt-8 text-center sm:hidden">
+      <Button tag="a" href={`/collections/${collectionHandle}`} variant="outline">
+        {ctaText}
+      </Button>
+    </div>
+  )}
+</section>

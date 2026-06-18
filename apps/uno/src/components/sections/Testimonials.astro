@@ -1,0 +1,43 @@
+---
+import Icon from "../ui/Icon.astro";
+import { cn } from "../../utils/format";
+
+interface Props {
+  title: string;
+  testimonials: {
+    name: string;
+    text: string;
+    rating: number;
+  }[];
+  class?: string;
+}
+
+const { title, testimonials, class: className } = Astro.props;
+---
+
+<section class={cn("container-page section", className)}>
+  <h2 class="text-2xl md:text-3xl font-heading font-bold text-base-content text-center mb-12">
+    {title}
+  </h2>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    {testimonials.map((t) => (
+      <div class="bg-base-200 rounded-xl p-6 flex flex-col">
+        <div class="flex items-center gap-0.5 mb-3">
+          {Array.from({ length: 5 }, (_, i) => (
+            <Icon
+              name={i < t.rating ? "starFilled" : "star"}
+              size="sm"
+              class={i < t.rating ? "text-secondary" : "text-base-300"}
+            />
+          ))}
+        </div>
+        <blockquote class="text-base-content/80 leading-relaxed flex-1 text-sm">
+          &ldquo;{t.text}&rdquo;
+        </blockquote>
+        <p class="text-sm font-semibold text-base-content mt-4">
+          &mdash; {t.name}
+        </p>
+      </div>
+    ))}
+  </div>
+</section>

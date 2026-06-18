@@ -1,0 +1,22 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import LoginForm from "../../components/account/LoginForm.astro";
+import { defaultTheme } from "../../theme/default";
+
+export const prerender = false;
+
+const theme = defaultTheme;
+---
+
+<BaseLayout
+  seo={{
+    title: "Sign In — elora",
+    description: "Sign in to your account to view orders and manage your profile.",
+    noindex: true,
+  }}
+  theme={theme}
+>
+  <div class="container-page py-12 flex justify-center">
+    <LoginForm />
+  </div>
+</BaseLayout>

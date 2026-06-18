@@ -1,0 +1,83 @@
+---
+import { cn } from "../../utils/format";
+
+interface Props {
+  variant?: "primary" | "secondary" | "outline" | "ghost" | "link";
+  size?: "sm" | "md" | "lg";
+  tag?: "button" | "a";
+  href?: string;
+  type?: "button" | "submit" | "reset";
+  disabled?: boolean;
+  fullWidth?: boolean;
+  loading?: boolean;
+  class?: string;
+}
+
+const {
+  variant = "primary",
+  size = "md",
+  tag = "button",
+  href,
+  type = "button",
+  disabled = false,
+  fullWidth = false,
+  loading = false,
+  class: className,
+} = Astro.props;
+
+const baseClasses =
+  "inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
+
+const variantClasses: Record<string, string> = {
+  primary:
+    "bg-primary text-primary-content hover:opacity-90 focus-visible:ring-primary rounded-md",
+  secondary:
+    "bg-secondary text-secondary-content hover:opacity-90 focus-visible:ring-secondary rounded-md",
+  outline:
+    "border border-base-300 text-base-content hover:bg-base-200 focus-visible:ring-base-content rounded-md",
+  ghost:
+    "text-base-content hover:bg-base-200 focus-visible:ring-base-content rounded-md",
+  link: "text-primary underline-offset-4 hover:underline focus-visible:ring-primary",
+};
+
+const sizeClasses: Record<string, string> = {
+  sm: "text-sm px-3 py-1.5 gap-1.5",
+  md: "text-sm px-5 py-2.5 gap-2",
+  lg: "text-base px-7 py-3 gap-2.5",
+};
+
+const widthClass = fullWidth ? "w-full" : "";
+const loadingClass = loading ? "cursor-wait" : "";
+const classes = cn(
+  baseClasses,
+  variantClasses[variant],
+  sizeClasses[size],
+  widthClass,
+  loadingClass,
+  className
+);
+---
+
+{
+  tag === "a" ? (
+    <a href={href} class={classes}>
+      {loading && (
+        <svg class="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+        </svg>
+      )}
+      <slot />
+    </a>
+  ) : (
+    <button type={type} disabled={disabled || loading} class={classes}>
+      {loading && (
+        <svg class="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+        </svg>
+      )}
+      <slot />
+    </button>
+  )
+}

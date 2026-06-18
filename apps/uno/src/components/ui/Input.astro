@@ -1,0 +1,60 @@
+---
+import { cn } from "../../utils/format";
+
+interface Props {
+  label: string;
+  name: string;
+  type?: "text" | "email" | "password" | "tel" | "number" | "search";
+  placeholder?: string;
+  required?: boolean;
+  error?: string;
+  value?: string;
+  autocomplete?: string;
+  class?: string;
+}
+
+const {
+  label,
+  name,
+  type = "text",
+  placeholder,
+  required = false,
+  error,
+  value,
+  autocomplete,
+  class: className,
+} = Astro.props;
+
+const inputId = `input-${name}`;
+const errorId = `error-${name}`;
+---
+
+<div class={cn("flex flex-col gap-1.5", className)}>
+  <label for={inputId} class="text-sm font-medium text-base-content">
+    {label}
+    {required && <span class="text-error ml-0.5" aria-hidden="true">*</span>}
+  </label>
+  <input
+    id={inputId}
+    name={name}
+    type={type}
+    placeholder={placeholder}
+    value={value}
+    required={required}
+    autocomplete={autocomplete}
+    aria-invalid={error ? "true" : "false"}
+    aria-describedby={error ? errorId : undefined}
+    class={cn(
+      "w-full px-3 py-2.5 text-sm rounded-md border bg-base-100 text-base-content",
+      "placeholder:text-base-300",
+      "focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary",
+      "transition-colors duration-200",
+      error ? "border-error" : "border-base-300"
+    )}
+  />
+  {error && (
+    <p id={errorId} class="text-sm text-error" role="alert">
+      {error}
+    </p>
+  )}
+</div>

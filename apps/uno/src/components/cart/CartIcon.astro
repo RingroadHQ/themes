@@ -1,0 +1,29 @@
+---
+import Icon from "../ui/Icon.astro";
+import { cn } from "../../utils/format";
+
+interface Props {
+  count?: number;
+  class?: string;
+}
+
+const { count = 0, class: className } = Astro.props;
+---
+
+<button
+  type="button"
+  data-cart-icon
+  class={cn("relative p-2 rounded-md text-base-content hover:bg-base-200 transition-colors", className)}
+  aria-label={`Cart${count > 0 ? `, ${count} items` : ""}`}
+>
+  <Icon name="cart" size="md" />
+  <span
+    class={cn(
+      "absolute -top-0.5 -right-0.5 w-5 h-5 flex items-center justify-center bg-primary text-primary-content text-xs font-bold rounded-full",
+      count === 0 ? "hidden" : ""
+    )}
+    data-cart-count
+  >
+    {count}
+  </span>
+</button>

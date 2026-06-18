@@ -1,0 +1,118 @@
+---
+import type { NavLink } from "../../data/types";
+import Icon from "../ui/Icon.astro";
+import Navigation from "./Navigation.astro";
+import MobileMenu from "./MobileMenu.astro";
+import { itemCount } from "../../store/cart";
+
+interface Props {
+  navigation: NavLink[];
+  logo: string | null;
+  storeName: string;
+}
+
+const { navigation, logo, storeName } = Astro.props;
+---
+
+<header class="sticky top-0 z-40 bg-base-100/95 backdrop-blur-sm border-b border-base-200">
+  <div class="container-page">
+    <div class="flex items-center justify-between h-16 gap-4">
+      <!-- Mobile hamburger -->
+      <button
+        type="button"
+        id="mobile-menu-toggle"
+        class="lg:hidden p-2 -ml-2 rounded-md text-base-content hover:bg-base-200 transition-colors"
+        aria-label="Open menu"
+      >
+        <Icon name="hamburger" size="md" />
+      </button>
+
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-2 shrink-0">
+        {logo ? (
+          <img src={logo} alt={storeName} class="h-8 w-auto" />
+        ) : (
+          <span class="text-xl font-heading font-bold text-primary tracking-tight">
+            {storeName}
+          </span>
+        )}
+      </a>
+
+      <!-- Desktop Navigation -->
+      <Navigation links={navigation} />
+
+      <!-- Right actions -->
+      <div class="flex items-center gap-1">
+        <!-- Search -->
+        <button
+          type="button"
+          id="search-toggle"
+          class="p-2 rounded-md text-base-content hover:bg-base-200 transition-colors"
+          aria-label="Search"
+        >
+          <Icon name="search" size="md" />
+        </button>
+
+        <!-- Account -->
+        <a
+          href="/account"
+          class="p-2 rounded-md text-base-content hover:bg-base-200 transition-colors hidden sm:block"
+          aria-label="Account"
+        >
+          <Icon name="user" size="md" />
+        </a>
+
+        <!-- Cart -->
+        <button
+          type="button"
+          id="cart-toggle"
+          class="relative p-2 rounded-md text-base-content hover:bg-base-200 transition-colors"
+          aria-label="Cart"
+        >
+          <Icon name="cart" size="md" />
+          <span
+            id="cart-count-badge"
+            class="absolute -top-0.5 -right-0.5 w-5 h-5 flex items-center justify-center bg-primary text-primary-content text-xs font-bold rounded-full hidden"
+          >
+            0
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Menu -->
+<MobileMenu links={navigation} />
+
+<script>
+  // Mobile menu toggle
+  const menuToggle = document.getElementById("mobile-menu-toggle");
+  menuToggle?.addEventListener("click", () => {
+    (window as any).__mobileMenu?.open();
+  });
+
+  // Search toggle
+  const searchToggle = document.getElementById("search-toggle");
+  searchToggle?.addEventListener("click", () => {
+    window.location.href = "/search";
+  });
+
+  // Cart toggle
+  const cartToggle = document.getElementById("cart-toggle");
+  cartToggle?.addEventListener("click", async () => {
+    const { openCart } = await import("../../store/ui");
+    openCart();
+  });
+
+  // Update cart count from nanostore
+  import("../../store/cart").then(({ itemCount: countStore }) => {
+    const badge = document.getElementById("cart-count-badge");
+    countStore.subscribe((count) => {
+      if (badge) {
+        badge.textContent = String(count);
+        badge.classList.toggle("hidden", count === 0);
+      }
+    });
+  });
+</script>

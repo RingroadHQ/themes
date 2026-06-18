@@ -1,0 +1,97 @@
+---
+import Icon from "../ui/Icon.astro";
+import { cn } from "../../utils/format";
+import { SEARCH_DEBOUNCE_MS } from "../../utils/constants";
+
+interface Props {
+  initialQuery?: string;
+  class?: string;
+}
+
+const { initialQuery = "", class: className } = Astro.props;
+---
+
+<div class={cn("relative", className)} data-search-form>
+  <div class="relative">
+    <input
+      type="search"
+      name="q"
+      value={initialQuery}
+      placeholder="Search wallets..."
+      autocomplete="off"
+      class="w-full pl-10 pr-4 py-3 text-sm rounded-lg border border-base-300 bg-base-100 text-base-content placeholder:text-base-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
+      aria-label="Search products"
+      data-search-input
+    />
+    <Icon name="search" size="sm" class="absolute left-3 top-1/2 -translate-y-1/2 text-base-300" />
+  </div>
+
+  <!-- Predictive results dropdown -->
+  <div
+    class="absolute top-full left-0 right-0 mt-2 bg-base-100 border border-base-200 rounded-lg shadow-xl hidden z-50 max-h-96 overflow-y-auto"
+    data-search-results
+  ></div>
+</div>
+
+<script>
+  const SEARCH_DEBOUNCE = {SEARCH_DEBOUNCE_MS};
+
+  document.querySelectorAll<HTMLElement>("[data-search-form]").forEach((form) => {
+    const input = form.querySelector<HTMLInputElement>("[data-search-input]");
+    const results = form.querySelector<HTMLElement>("[data-search-results]");
+    let debounceTimer: ReturnType<typeof setTimeout>;
+
+    input?.addEventListener("input", () => {
+      clearTimeout(debounceTimer);
+      const q = input.value.trim();
+
+      if (q.length < 2) {
+        results?.classList.add("hidden");
+        return;
+      }
+
+      debounceTimer = setTimeout(async () => {
+        const { predictiveSearch } = await import("../../data/api/search");
+        const res = await predictiveSearch(q);
+
+        if (results) {
+          if (res.products.length === 0) {
+            results.classList.add("hidden");
+          } else {
+            results.classList.remove("hidden");
+            results.innerHTML = res.products
+              .map(
+                (p) => `
+              <a href="/products/${p.handle}" class="flex items-center gap-3 px-4 py-3 hover:bg-base-200 transition-colors">
+                <img src="${p.images[0]?.src}" alt="${p.title}" class="w-10 h-10 rounded object-cover bg-base-300" width="80" height="60" />
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-medium text-base-content line-clamp-1">${p.title}</p>
+                  <p class="text-xs text-base-300">$${p.priceRange.min}</p>
+                </div>
+              </a>`
+              )
+              .join("");
+            results.innerHTML += `
+              <a href="/search?q=${encodeURIComponent(q)}" class="block text-center px-4 py-3 text-sm text-primary font-medium hover:bg-base-200 border-t border-base-200">
+                View all results for "${q}"
+              </a>`;
+          }
+        }
+      }, SEARCH_DEBOUNCE);
+    });
+
+    // Hide on click outside
+    document.addEventListener("click", (e) => {
+      if (!form.contains(e.target as Node)) {
+        results?.classList.add("hidden");
+      }
+    });
+
+    // Submit on Enter
+    input?.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        window.location.href = `/search?q=${encodeURIComponent(input.value.trim())}`;
+      }
+    });
+  });
+</script>

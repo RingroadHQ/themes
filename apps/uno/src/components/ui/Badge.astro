@@ -1,0 +1,39 @@
+---
+import { cn } from "../../utils/format";
+
+interface Props {
+  variant?: "default" | "sale" | "sold-out" | "new" | "bestseller";
+  size?: "sm" | "md";
+  class?: string;
+}
+
+const {
+  variant = "default",
+  size = "sm",
+  class: className,
+} = Astro.props;
+
+const variantClasses: Record<string, string> = {
+  default: "bg-base-200 text-base-content",
+  sale: "bg-error text-white",
+  "sold-out": "bg-base-300 text-base-content",
+  new: "bg-success text-white",
+  bestseller: "bg-secondary text-secondary-content",
+};
+
+const sizeClasses: Record<string, string> = {
+  sm: "text-xs px-2 py-0.5",
+  md: "text-sm px-3 py-1",
+};
+
+const classes = cn(
+  "inline-flex items-center font-medium rounded-full",
+  variantClasses[variant],
+  sizeClasses[size],
+  className
+);
+---
+
+<span class={classes}>
+  <slot />
+</span>

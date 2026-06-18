@@ -1,0 +1,54 @@
+---
+import { cn } from "../../utils/format";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+const links = [
+  { label: "Dashboard", url: "/account" },
+  { label: "Orders", url: "/account/orders" },
+  { label: "Addresses", url: "/account/addresses" },
+];
+---
+
+<nav class={cn(className)} aria-label="Account navigation">
+  <ul class="flex flex-col gap-1">
+    {links.map((link) => {
+      const isActive = Astro.url.pathname === link.url;
+      return (
+        <li>
+          <a
+            href={link.url}
+            class={cn(
+              "block px-3 py-2 text-sm rounded-md transition-colors",
+              isActive
+                ? "bg-primary/10 text-primary font-medium"
+                : "text-base-content hover:bg-base-200"
+            )}
+          >
+            {link.label}
+          </a>
+        </li>
+      );
+    })}
+    <li class="mt-4">
+      <button
+        type="button"
+        class="w-full text-left px-3 py-2 text-sm text-base-300 hover:text-error rounded-md hover:bg-base-200 transition-colors"
+        data-logout-btn
+      >
+        Sign Out
+      </button>
+    </li>
+  </ul>
+</nav>
+
+<script>
+  document.querySelector<HTMLButtonElement>("[data-logout-btn]")?.addEventListener("click", () => {
+    localStorage.removeItem("ringroad:auth-token");
+    window.location.href = "/";
+  });
+</script>

@@ -1,0 +1,69 @@
+---
+import type { Order } from "../../data/types";
+import { formatPrice, formatDateShort } from "../../utils/format";
+import Icon from "../ui/Icon.astro";
+import { cn } from "../../utils/format";
+
+interface Props {
+  orders: Order[];
+  class?: string;
+}
+
+const { orders, class: className } = Astro.props;
+---
+
+<div class={cn(className)}>
+  <h2 class="text-xl font-heading font-bold text-base-content mb-6">Order History</h2>
+
+  {orders.length === 0 ? (
+    <div class="text-center py-12 bg-base-200 rounded-lg">
+      <Icon name="package" size="xl" class="mx-auto mb-3 opacity-30 w-12 h-12" />
+      <p class="text-base-content font-medium">No orders yet</p>
+      <p class="text-sm text-base-300 mt-1">Your order history will appear here.</p>
+    </div>
+  ) : (
+    <div class="space-y-4">
+      {orders.map((order) => (
+        <div class="border border-base-200 rounded-lg overflow-hidden">
+          <div class="flex items-center justify-between p-4 bg-base-200 cursor-pointer" data-order-toggle={order.id}>
+            <div class="flex items-center gap-4">
+              <div>
+                <p class="text-sm font-medium text-base-content">{order.orderNumber}</p>
+                <p class="text-xs text-base-300">{formatDateShort(order.createdAt)}</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-4">
+              <span class="text-xs px-2 py-0.5 rounded-full capitalize bg-success/10 text-success font-medium">
+                {order.status}
+              </span>
+              <span class="text-sm font-semibold">{formatPrice(order.total)}</span>
+            </div>
+          </div>
+          <div class="hidden p-4" data-order-details={order.id}>
+            <div class="space-y-3">
+              {order.items.map((item) => (
+                <div class="flex gap-3">
+                  <img src={item.image.src} alt={item.image.alt} class="w-12 h-12 rounded object-cover bg-base-300" />
+                  <div>
+                    <p class="text-sm font-medium">{item.title} × {item.quantity}</p>
+                    <p class="text-xs text-base-300">{item.variantTitle}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-order-toggle]").forEach((toggle) => {
+    toggle.addEventListener("click", () => {
+      const orderId = toggle.dataset.orderToggle;
+      const details = document.querySelector(`[data-order-details="${orderId}"]`);
+      details?.classList.toggle("hidden");
+    });
+  });
+</script>

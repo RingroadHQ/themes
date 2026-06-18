@@ -1,0 +1,30 @@
+---
+import { cn } from "../../utils/format";
+
+interface Props {
+  content: string;
+  alignment?: "left" | "center";
+  maxWidth?: "sm" | "md" | "lg";
+  class?: string;
+}
+
+const { content, alignment = "left", maxWidth = "md", class: className } = Astro.props;
+
+const maxWidthClasses: Record<string, string> = {
+  sm: "max-w-prose",
+  md: "max-w-2xl",
+  lg: "max-w-4xl",
+};
+---
+
+<section class={cn("container-page section", className)}>
+  <div
+    class={cn(
+      "prose",
+      maxWidthClasses[maxWidth],
+      alignment === "center" ? "mx-auto text-center" : ""
+    )}
+  >
+    <Fragment set:html={content} />
+  </div>
+</section>

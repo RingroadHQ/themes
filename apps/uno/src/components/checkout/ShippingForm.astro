@@ -1,0 +1,50 @@
+---
+import Input from "../ui/Input.astro";
+import Button from "../ui/Button.astro";
+import { cn } from "../../utils/format";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<form class={cn("space-y-4", className)} data-shipping-form>
+  <h2 class="text-xl font-heading font-bold text-base-content">Shipping Address</h2>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <Input label="First Name" name="firstName" required autocomplete="given-name" />
+    <Input label="Last Name" name="lastName" required autocomplete="family-name" />
+  </div>
+
+  <Input label="Address" name="address1" required autocomplete="address-line1" />
+  <Input label="Apartment, suite, etc. (optional)" name="address2" autocomplete="address-line2" />
+
+  <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+    <Input label="City" name="city" required autocomplete="address-level2" />
+    <Input label="State / Province" name="province" required autocomplete="address-level1" />
+    <Input label="ZIP Code" name="zip" required autocomplete="postal-code" />
+  </div>
+
+  <Input label="Country" name="country" required autocomplete="country-name" />
+  <Input label="Phone" name="phone" type="tel" required autocomplete="tel" />
+
+  <Button type="submit" variant="primary" size="lg" fullWidth data-shipping-submit>
+    Continue to Shipping
+  </Button>
+</form>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>("[data-shipping-form]").forEach((form) => {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const address = Object.fromEntries(formData.entries());
+      form.dispatchEvent(new CustomEvent("shipping-submit", {
+        detail: address,
+        bubbles: true,
+      }));
+    });
+  });
+</script>

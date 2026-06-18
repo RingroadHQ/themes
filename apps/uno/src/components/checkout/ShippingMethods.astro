@@ -1,0 +1,54 @@
+---
+import type { ShippingRate } from "../../data/types";
+import { formatPrice } from "../../utils/format";
+import { cn } from "../../utils/format";
+import Button from "../ui/Button.astro";
+
+interface Props {
+  rates: ShippingRate[];
+  selectedRateId?: string;
+  class?: string;
+}
+
+const { rates, selectedRateId, class: className } = Astro.props;
+---
+
+<div class={cn("space-y-4", className)} data-shipping-methods>
+  <h2 class="text-xl font-heading font-bold text-base-content">Shipping Method</h2>
+
+  <div class="space-y-3">
+    {rates.map((rate) => {
+      const isFree = rate.price === 0;
+      return (
+        <label
+          class={cn(
+            "flex items-center gap-4 p-4 rounded-lg border-2 cursor-pointer transition-all",
+            selectedRateId === rate.id
+              ? "border-primary bg-primary/5"
+              : "border-base-200 hover:border-base-300"
+          )}
+        >
+          <input
+            type="radio"
+            name="shipping-rate"
+            value={rate.id}
+            checked={selectedRateId === rate.id}
+            class="w-4 h-4 text-primary focus:ring-primary"
+            data-shipping-rate
+          />
+          <div class="flex-1">
+            <p class="text-sm font-medium text-base-content">{rate.title}</p>
+            <p class="text-xs text-base-300">{rate.estimatedDays}</p>
+          </div>
+          <span class={cn("text-sm font-semibold", isFree ? "text-success" : "text-base-content")}>
+            {isFree ? "Free" : formatPrice(rate.price)}
+          </span>
+        </label>
+      );
+    })}
+  </div>
+
+  <Button type="button" variant="primary" size="lg" fullWidth data-shipping-continue>
+    Continue to Payment
+  </Button>
+</div>

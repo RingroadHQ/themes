@@ -1,0 +1,46 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/common/Breadcrumbs.astro";
+import { defaultTheme } from "../../theme/default";
+
+export async function getStaticPaths() {
+  const pages = await getCollection("pages");
+  return pages.map((page) => ({ params: { slug: page.id } }));
+}
+
+const { slug } = Astro.params;
+const pages = await getCollection("pages");
+const page = pages.find((p) => p.id === slug);
+
+if (!page) {
+  return Astro.redirect("/404");
+}
+
+const { Content } = await page.render();
+const theme = defaultTheme;
+---
+
+<BaseLayout
+  seo={{
+    title: page.data.seo?.title || page.data.title,
+    description: page.data.seo?.description || page.data.description,
+  }}
+  theme={theme}
+>
+  <div class="container-page py-12">
+    <Breadcrumbs
+      crumbs={[
+        { title: "Home", url: "/" },
+        { title: page.data.title, url: "" },
+      ]}
+    />
+
+    <div class="max-w-3xl">
+      <h1 class="text-2xl md:text-3xl font-heading font-bold text-base-content mb-8">{page.data.title}</h1>
+      <div class="prose text-base-content/85 leading-relaxed">
+        <Content />
+      </div>
+    </div>
+  </div>
+</BaseLayout>

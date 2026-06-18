@@ -1,0 +1,131 @@
+---
+import Icon from "../ui/Icon.astro";
+import { cn } from "../../utils/format";
+
+// Available filter groups
+const filterGroups = [
+  {
+    name: "Category",
+    key: "category",
+    options: [
+      { label: "Bifold", value: "bifold", count: 8 },
+      { label: "Cardholder", value: "cardholder", count: 4 },
+      { label: "Travel", value: "travel", count: 2 },
+      { label: "Minimalist", value: "minimalist", count: 3 },
+      { label: "Money Clip", value: "money-clip", count: 1 },
+    ],
+  },
+  {
+    name: "Material",
+    key: "material",
+    options: [
+      { label: "Full-Grain Leather", value: "full-grain", count: 10 },
+      { label: "Top-Grain Leather", value: "top-grain", count: 5 },
+      { label: "Shell Cordovan", value: "cordovan", count: 1 },
+      { label: "Carbon Fiber", value: "carbon-fiber", count: 1 },
+      { label: "Copper", value: "copper", count: 1 },
+    ],
+  },
+  {
+    name: "Price",
+    key: "price",
+    options: [
+      { label: "Under $50", value: "under-50", count: 5 },
+      { label: "$50 - $100", value: "50-100", count: 10 },
+      { label: "$100 - $200", value: "100-200", count: 4 },
+      { label: "Over $200", value: "over-200", count: 1 },
+    ],
+  },
+];
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class={cn(className)} data-collection-filters>
+  <!-- Mobile filter button -->
+  <button
+    type="button"
+    class="lg:hidden flex items-center gap-2 px-4 py-2 text-sm border border-base-300 rounded-md text-base-content hover:bg-base-200 transition-colors"
+    data-filter-toggle
+  >
+    <Icon name="filter" size="sm" />
+    Filters
+  </button>
+
+  <!-- Filter panel -->
+  <div class="hidden lg:block space-y-6" data-filter-panel>
+    <h3 class="text-sm font-semibold text-base-content uppercase tracking-wider">Filters</h3>
+    {filterGroups.map((group) => (
+      <fieldset>
+        <legend class="text-sm font-medium text-base-content mb-3">{group.name}</legend>
+        <div class="space-y-2">
+          {group.options.map((opt) => (
+            <label class="flex items-center gap-2.5 cursor-pointer group">
+              <input
+                type="checkbox"
+                name={group.key}
+                value={opt.value}
+                class="w-4 h-4 rounded border-base-300 text-primary focus:ring-primary"
+                data-filter-checkbox
+              />
+              <span class="text-sm text-base-content group-hover:text-base-content transition-colors">
+                {opt.label}
+              </span>
+              <span class="text-xs text-base-300 ml-auto">{opt.count}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+    ))}
+
+    <button
+      type="button"
+      class="text-sm text-primary hover:underline"
+      data-clear-filters
+    >
+      Clear all filters
+    </button>
+  </div>
+</div>
+
+<script>
+  // Mobile filter toggle
+  const toggle = document.querySelector<HTMLButtonElement>("[data-filter-toggle]");
+  const panel = document.querySelector<HTMLElement>("[data-filter-panel]");
+
+  toggle?.addEventListener("click", () => {
+    const isOpen = panel?.classList.toggle("!block");
+    toggle.textContent = isOpen ? "Close Filters" : "Filters";
+  });
+
+  // Filter logic: update URL and reload
+  document.querySelectorAll<HTMLInputElement>("[data-filter-checkbox]").forEach((cb) => {
+    cb.addEventListener("change", () => {
+      const url = new URL(window.location.href);
+      const allChecked = document.querySelectorAll<HTMLInputElement>("[data-filter-checkbox]:checked");
+      const values = Array.from(allChecked).map((c) => c.value);
+      if (values.length > 0) {
+        url.searchParams.set("tags", values.join(","));
+      } else {
+        url.searchParams.delete("tags");
+      }
+      url.searchParams.delete("page");
+      window.location.href = url.toString();
+    });
+  });
+
+  // Clear filters
+  document.querySelector<HTMLButtonElement>("[data-clear-filters]")?.addEventListener("click", () => {
+    document.querySelectorAll<HTMLInputElement>("[data-filter-checkbox]").forEach((cb) => {
+      cb.checked = false;
+    });
+    const url = new URL(window.location.href);
+    url.searchParams.delete("tags");
+    url.searchParams.delete("page");
+    window.location.href = url.toString();
+  });
+</script>

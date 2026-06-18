@@ -1,0 +1,82 @@
+---
+import type { SearchResult } from "../../data/types";
+import ProductGrid from "../product/ProductGrid.astro";
+import Icon from "../ui/Icon.astro";
+import { cn } from "../../utils/format";
+
+interface Props {
+  results: SearchResult;
+  query: string;
+  class?: string;
+}
+
+const { results, query, class: className } = Astro.props;
+
+if (!query) return;
+---
+
+<div class={cn(className)}>
+  <p class="text-sm text-base-300 mb-6">
+    {results.totalResults} result{results.totalResults !== 1 ? "s" : ""} for &ldquo;{query}&rdquo;
+  </p>
+
+  {results.totalResults === 0 ? (
+    <div class="text-center py-16">
+      <Icon name="search" size="xl" class="mx-auto mb-3 opacity-30 w-12 h-12" />
+      <p class="text-lg font-medium text-base-content">No results found</p>
+      <p class="text-sm text-base-300 mt-1">Try a different search term or browse our collections.</p>
+    </div>
+  ) : (
+    <>
+      {results.products.length > 0 && (
+        <div class="mb-10">
+          <h2 class="text-lg font-heading font-bold text-base-content mb-4">Products</h2>
+          <ProductGrid products={results.products} columns={4} />
+        </div>
+      )}
+
+      {results.collections.length > 0 && (
+        <div class="mb-10">
+          <h2 class="text-lg font-heading font-bold text-base-content mb-4">Collections</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {results.collections.map((c) => (
+              <a
+                href={`/collections/${c.handle}`}
+                class="flex items-center gap-4 p-4 border border-base-200 rounded-lg hover:border-base-300 hover:bg-base-200 transition-colors"
+              >
+                {c.image && (
+                  <img
+                    src={c.image.src}
+                    alt={c.image.alt}
+                    class="w-16 h-16 rounded-md object-cover bg-base-300"
+                    width={80}
+                    height={80}
+                  />
+                )}
+                <div>
+                  <p class="font-medium text-base-content">{c.title}</p>
+                  <p class="text-sm text-base-300 line-clamp-2">{c.description}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {results.pages.length > 0 && (
+        <div>
+          <h2 class="text-lg font-heading font-bold text-base-content mb-4">Pages</h2>
+          <ul class="space-y-2">
+            {results.pages.map((p) => (
+              <li>
+                <a href={p.url} class="text-sm text-primary hover:underline">
+                  {p.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </>
+  )}
+</div>

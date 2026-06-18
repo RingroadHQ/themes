@@ -1,0 +1,79 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/common/Breadcrumbs.astro";
+import { defaultTheme } from "../../theme/default";
+import { formatDate } from "../../utils/format";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({ params: { slug: post.id } }));
+}
+
+const { slug } = Astro.params;
+const posts = await getCollection("blog");
+const post = posts.find((p) => p.id === slug);
+
+if (!post) {
+  return Astro.redirect("/404");
+}
+
+const { Content } = await post.render();
+const theme = defaultTheme;
+---
+
+<BaseLayout
+  seo={{
+    title: post.data.seo?.title || post.data.title,
+    description: post.data.seo?.description || post.data.description,
+    image: post.data.image,
+  }}
+  theme={theme}
+>
+  <article class="container-page py-12">
+    <Breadcrumbs
+      crumbs={[
+        { title: "Home", url: "/" },
+        { title: "Blog", url: "/blog" },
+        { title: post.data.title, url: "" },
+      ]}
+    />
+
+    <header class="max-w-3xl mx-auto mb-8">
+      {post.data.tags && post.data.tags.length > 0 && (
+        <div class="flex flex-wrap gap-2 mb-3">
+          {post.data.tags.map((tag) => (
+            <span class="text-xs px-2.5 py-0.5 bg-base-200 text-base-300 rounded-full">{tag}</span>
+          ))}
+        </div>
+      )}
+      <h1 class="text-3xl md:text-4xl font-heading font-bold text-base-content leading-tight">
+        {post.data.title}
+      </h1>
+      <div class="flex items-center gap-3 mt-4 text-sm text-base-300">
+        <span>{post.data.author}</span>
+        <span>·</span>
+        <time datetime={post.data.publishDate.toISOString()}>
+          {formatDate(post.data.publishDate.toISOString())}
+        </time>
+      </div>
+    </header>
+
+    {post.data.image && (
+      <div class="max-w-4xl mx-auto mb-10">
+        <img
+          src={post.data.image}
+          alt={post.data.title}
+          class="w-full rounded-xl object-cover aspect-video"
+          width={1200}
+          height={800}
+          fetchpriority="high"
+        />
+      </div>
+    )}
+
+    <div class="max-w-3xl mx-auto prose text-base-content/85 leading-relaxed">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>

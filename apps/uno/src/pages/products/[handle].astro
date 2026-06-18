@@ -1,0 +1,104 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProductGallery from "../../components/product/ProductGallery.astro";
+import ProductForm from "../../components/product/ProductForm.astro";
+import ProductReviews from "../../components/product/ProductReviews.astro";
+import ProductRecommendations from "../../components/product/ProductRecommendations.astro";
+import Breadcrumbs from "../../components/common/Breadcrumbs.astro";
+import { getProduct, getAllProductHandles, getProductRecommendations } from "../../data/api/products";
+import { defaultTheme } from "../../theme/default";
+import type { Product } from "../../data/types";
+
+export async function getStaticPaths() {
+  const handles = await getAllProductHandles();
+  return handles.map((handle) => ({ params: { handle } }));
+}
+
+const { handle } = Astro.params;
+const product = await getProduct(handle as string);
+
+if (!product) {
+  return Astro.redirect("/404");
+}
+
+const recommendations = await getProductRecommendations(product.id, 4);
+const theme = defaultTheme;
+---
+
+<BaseLayout
+  seo={{
+    title: product.seo.title || product.title,
+    description: product.seo.description || product.description,
+    image: product.images[0]?.src,
+  }}
+  theme={theme}
+>
+  <div class="container-page py-6">
+    <Breadcrumbs
+      crumbs={[
+        { title: "Home", url: "/" },
+        { title: "Products", url: "/products" },
+        { title: product.title, url: "" },
+      ]}
+    />
+  </div>
+
+  <div class="container-page pb-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+      <ProductGallery images={product.images} />
+      <div>
+        {product.vendor && (
+          <p class="text-xs text-base-300 uppercase tracking-widest mb-2">{product.vendor}</p>
+        )}
+        <h1 class="text-2xl md:text-3xl font-heading font-bold text-base-content mb-3">
+          {product.title}
+        </h1>
+        <ProductForm product={product} />
+      </div>
+    </div>
+
+    <!-- Product description -->
+    <div class="mt-16 max-w-3xl">
+      <h2 class="text-xl font-heading font-bold text-base-content mb-4">Description</h2>
+      <div class="prose text-base-300 leading-relaxed">
+        <Fragment set:html={product.descriptionHtml} />
+      </div>
+    </div>
+
+    <!-- Reviews -->
+    {product.reviews && product.reviews.length > 0 && (
+      <div class="mt-16 max-w-3xl">
+        <ProductReviews
+          reviews={product.reviews}
+          averageRating={product.averageRating || 0}
+          reviewCount={product.reviewCount || 0}
+        />
+      </div>
+    )}
+
+    <!-- Recommendations -->
+    <div class="mt-16">
+      <ProductRecommendations products={recommendations} />
+    </div>
+  </div>
+
+  <!-- Product JSON-LD -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.title,
+    description: product.description,
+    image: product.images.map((img) => img.src),
+    sku: product.variants[0]?.sku,
+    brand: { "@type": "Brand", name: product.vendor },
+    offers: {
+      "@type": "Offer",
+      price: product.priceRange.min,
+      priceCurrency: "USD",
+      availability: product.available
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock",
+      url: new URL(`/products/${product.handle}`, Astro.url).href,
+    },
+  })} />
+</BaseLayout>

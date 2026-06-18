@@ -1,0 +1,166 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ShippingForm from "../components/checkout/ShippingForm.astro";
+import ShippingMethods from "../components/checkout/ShippingMethods.astro";
+import PaymentForm from "../components/checkout/PaymentForm.astro";
+import OrderSummary from "../components/checkout/OrderSummary.astro";
+import Button from "../components/ui/Button.astro";
+import { defaultTheme } from "../theme/default";
+
+export const prerender = false;
+
+const theme = defaultTheme;
+---
+
+<BaseLayout
+  seo={{
+    title: "Checkout — elora",
+    description: "Complete your purchase securely.",
+    noindex: true,
+  }}
+  theme={theme}
+>
+  <div class="container-page py-12">
+    <h1 class="text-2xl md:text-3xl font-heading font-bold text-base-content mb-8">Checkout</h1>
+
+    <div id="checkout-app" class="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-8">
+      <!-- Checkout steps -->
+      <div id="checkout-steps">
+        <!-- Step 1: Shipping Address -->
+        <div id="step-shipping" class="space-y-4">
+          <ShippingForm />
+        </div>
+
+        <!-- Step 2: Shipping Method (hidden initially) -->
+        <div id="step-method" class="hidden space-y-4">
+          <ShippingMethods rates={[]} />
+        </div>
+
+        <!-- Step 3: Payment (hidden initially) -->
+        <div id="step-payment" class="hidden space-y-4">
+          <PaymentForm />
+        </div>
+
+        <!-- Step 4: Confirmation (hidden initially) -->
+        <div id="step-confirmation" class="hidden text-center py-16">
+          <div class="w-16 h-16 rounded-full bg-success/10 flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-success" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
+          </div>
+          <h2 class="text-2xl font-heading font-bold text-base-content mb-2">Order Confirmed!</h2>
+          <p class="text-base-300 mb-6">Thank you for your order. You'll receive a confirmation email shortly.</p>
+          <a href="/" class="inline-flex items-center justify-center px-5 py-2.5 bg-primary text-primary-content rounded-md text-sm font-medium">Continue Shopping</a>
+        </div>
+      </div>
+
+      <!-- Order Summary sidebar -->
+      <div id="checkout-summary" class="lg:sticky lg:top-24 lg:self-start">
+        <OrderSummary items={[]} subtotal={0} shipping={0} tax={0} total={0} />
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  import("../store/cart").then(async ({ items, subtotal }) => {
+    const { formatPrice } = await import("../utils/format");
+    const { getShippingRates, createOrder } = await import("../data/api/checkout");
+
+    const list = items.get();
+    if (list.length === 0) {
+      window.location.href = "/cart";
+      return;
+    }
+
+    let shippingAddress: any = null;
+    let selectedRate: any = null;
+
+    // Update order summary
+    function updateSummary(shipping: number = 0) {
+      const sub = subtotal.get();
+      const tax = Math.round(sub * 0.08 * 100) / 100;
+      const total = Math.round((sub + shipping + tax) * 100) / 100;
+      const summaryEl = document.getElementById("checkout-summary");
+      if (summaryEl) {
+        summaryEl.innerHTML = `
+          <div class="bg-base-200 rounded-lg p-6 space-y-4">
+            <h3 class="text-lg font-heading font-bold text-base-content">Order Summary</h3>
+            <div class="space-y-3 max-h-64 overflow-y-auto">${list.map((item) => `
+              <div class="flex gap-3">
+                <img src="${item.image.src}" alt="${item.image.alt}" class="w-14 h-14 rounded-md object-cover bg-base-300" />
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-medium line-clamp-1">${item.title}</p>
+                  <p class="text-xs text-base-300">${item.variantTitle} × ${item.quantity}</p>
+                  <p class="text-sm font-medium">${formatPrice(item.price * item.quantity)}</p>
+                </div>
+              </div>`).join("")}</div>
+            <div class="border-t border-base-300 pt-3 space-y-1.5 text-sm">
+              <div class="flex justify-between"><span class="text-base-300">Subtotal</span><span>${formatPrice(sub)}</span></div>
+              <div class="flex justify-between"><span class="text-base-300">Shipping</span><span class="${shipping === 0 ? 'text-success' : ''}">${shipping === 0 ? 'Free' : formatPrice(shipping)}</span></div>
+              <div class="flex justify-between"><span class="text-base-300">Tax</span><span>${formatPrice(tax)}</span></div>
+            </div>
+            <div class="border-t border-base-300 pt-3 flex justify-between text-base font-bold"><span>Total</span><span>${formatPrice(total)}</span></div>
+          </div>`;
+      }
+    }
+    updateSummary();
+
+    // Step 1: Shipping form submit
+    const stepShipping = document.getElementById("step-shipping")!;
+    const stepMethod = document.getElementById("step-method")!;
+    const stepPayment = document.getElementById("step-payment")!;
+    const stepConfirmation = document.getElementById("step-confirmation")!;
+
+    stepShipping.addEventListener("shipping-submit", async (e: any) => {
+      shippingAddress = e.detail;
+      const rates = await getShippingRates(shippingAddress, list);
+      stepShipping.classList.add("hidden");
+      stepMethod.classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      // Render shipping methods
+      const methodEl = stepMethod.querySelector("[data-shipping-methods]");
+      if (methodEl) {
+        methodEl.innerHTML = `
+          <h2 class="text-xl font-heading font-bold text-base-content">Shipping Method</h2>
+          <div class="space-y-3">${rates.map((rate: any) => `
+            <label class="flex items-center gap-4 p-4 rounded-lg border-2 cursor-pointer transition-all ${rate.id === 'rate-standard' ? 'border-primary bg-primary/5' : 'border-base-200 hover:border-base-300'}">
+              <input type="radio" name="shipping-rate" value="${rate.id}" ${rate.id === 'rate-standard' ? 'checked' : ''} class="w-4 h-4 text-primary" />
+              <div class="flex-1"><p class="text-sm font-medium text-base-content">${rate.title}</p><p class="text-xs text-base-300">${rate.estimatedDays}</p></div>
+              <span class="text-sm font-semibold ${rate.price === 0 ? 'text-success' : ''}">${rate.price === 0 ? 'Free' : formatPrice(rate.price)}</span>
+            </label>`).join("")}</div>
+          <button id="btn-shipping-continue" class="mt-4 w-full inline-flex items-center justify-center px-5 py-2.5 bg-primary text-primary-content rounded-md text-sm font-medium">Continue to Payment</button>`;
+
+        // Pre-select first rate
+        selectedRate = rates[0];
+        updateSummary(selectedRate.price);
+
+        // Rate change
+        methodEl.querySelectorAll<HTMLInputElement>("input[name='shipping-rate']").forEach((radio) => {
+          radio.addEventListener("change", () => {
+            selectedRate = rates.find((r: any) => r.id === radio.value);
+            updateSummary(selectedRate.price);
+          });
+        });
+
+        // Continue button
+        document.getElementById("btn-shipping-continue")?.addEventListener("click", () => {
+          stepMethod.classList.add("hidden");
+          stepPayment.classList.remove("hidden");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      }
+    });
+
+    // Step 3: Payment submit
+    stepPayment.addEventListener("payment-submit", async () => {
+      const order = await createOrder(list, shippingAddress, shippingAddress, selectedRate);
+      stepPayment.classList.add("hidden");
+      stepConfirmation.classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      // Clear cart
+      const { clearCart } = await import("../store/cart");
+      clearCart();
+    });
+  });
+</script>

@@ -1,17 +1,80 @@
 ---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import HeroBanner from "../components/sections/HeroBanner.astro";
+import FeaturedCollection from "../components/sections/FeaturedCollection.astro";
+import ImageWithText from "../components/sections/ImageWithText.astro";
+import Testimonials from "../components/sections/Testimonials.astro";
+import Newsletter from "../components/common/Newsletter.astro";
+import { defaultTheme } from "../theme/default";
 
+const theme = defaultTheme;
+const seo = {
+  title: "elora — Premium Handcrafted Leather Wallets",
+  description:
+    "Discover handcrafted leather wallets built to last a lifetime. Bifolds, cardholders, travel wallets, and more. Free shipping over $75.",
+};
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout seo={seo} theme={theme}>
+  <HeroBanner
+    title="Crafted to Last a Lifetime"
+    subtitle="Premium leather wallets handcrafted by artisans using the finest materials on earth. Each piece tells a story."
+    image="https://picsum.photos/id/20/1600/900"
+    imageAlt="Handcrafted leather wallet on a wooden desk"
+    ctaText="Shop Collection"
+    ctaUrl="/products"
+    alignment="left"
+    height="lg"
+  />
+
+  <FeaturedCollection
+    title="Best Sellers"
+    description="The wallets our customers love most. Proven designs that stand the test of time."
+    collectionHandle="best-sellers"
+    limit={4}
+    ctaText="View All Best Sellers"
+  />
+
+  <ImageWithText
+    image="https://picsum.photos/id/30/800/600"
+    imageAlt="Artisan crafting a leather wallet by hand"
+    title="The Art of Craftsmanship"
+    body="Every wallet we make passes through the hands of skilled artisans. From selecting the finest full-grain leather hides to the final hand-stitched seam, each step is performed with care and precision. We believe in quality that you can feel — wallets that age gracefully and tell your story."
+    imagePosition="right"
+    ctaText="Our Story"
+    ctaUrl="/pages/about"
+  />
+
+  <FeaturedCollection
+    title="New Arrivals"
+    description="Fresh designs just in from our workshop. Be the first to own our latest creations."
+    collectionHandle="new-arrivals"
+    limit={4}
+    ctaText="Shop New Arrivals"
+  />
+
+  <Testimonials
+    title="What Our Customers Say"
+    testimonials={[
+      {
+        name: "Michael R.",
+        text: "The leather quality is incredible. After 6 months it's developed a beautiful patina and still looks brand new. Worth every penny.",
+        rating: 5,
+      },
+      {
+        name: "Sarah K.",
+        text: "I've been searching for the perfect minimalist wallet for years. The Slim Cardholder is exactly what I needed — disappears into my pocket.",
+        rating: 5,
+      },
+      {
+        name: "James T.",
+        text: "Bought the Heritage Bifold as a gift for my father. The Shell Cordovan is stunning. He says it's the nicest wallet he's ever owned.",
+        rating: 5,
+      },
+    ]}
+  />
+
+  <div class="container-page section">
+    <Newsletter />
+  </div>
+</BaseLayout>

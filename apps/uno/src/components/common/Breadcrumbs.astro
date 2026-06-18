@@ -1,0 +1,52 @@
+---
+import Icon from "../ui/Icon.astro";
+import { cn } from "../../utils/format";
+
+interface Crumb {
+  title: string;
+  url: string;
+}
+
+interface Props {
+  crumbs: Crumb[];
+  class?: string;
+}
+
+const { crumbs, class: className } = Astro.props;
+---
+
+{
+  crumbs.length > 0 && (
+    <nav aria-label="Breadcrumb" class={cn("py-4", className)}>
+      <ol class="flex flex-wrap items-center gap-1.5 text-sm text-base-300">
+        {crumbs.map((crumb, i) => (
+          <li class="flex items-center gap-1.5">
+            {i < crumbs.length - 1 ? (
+              <a href={crumb.url} class="hover:text-base-content transition-colors">
+                {crumb.title}
+              </a>
+            ) : (
+              <span class="text-base-content font-medium" aria-current="page">
+                {crumb.title}
+              </span>
+            )}
+            {i < crumbs.length - 1 && (
+              <Icon name="chevronRight" size="sm" class="text-base-300" />
+            )}
+          </li>
+        ))}
+      </ol>
+      <!-- JSON-LD BreadcrumbList -->
+      <script type="application/ld+json" set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: crumbs.map((crumb, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          name: crumb.title,
+          item: new URL(crumb.url, Astro.url).href,
+        })),
+      })} />
+    </nav>
+  )
+}

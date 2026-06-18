@@ -1,0 +1,151 @@
+---
+import type { Product } from "../../data/types";
+import { cn } from "../../utils/format";
+import { getAspectRatioClass } from "../../utils/image";
+import Badge from "../ui/Badge.astro";
+import Price from "../ui/Price.astro";
+import Icon from "../ui/Icon.astro";
+
+interface Props {
+  product: Product;
+  showRating?: boolean;
+  showVendor?: boolean;
+  aspectRatio?: "1/1" | "4/5" | "3/4";
+  class?: string;
+}
+
+const {
+  product,
+  showRating = true,
+  showVendor = false,
+  aspectRatio = "4/5",
+  class: className,
+} = Astro.props;
+
+const hasSale = product.compareAtPriceRange !== null;
+const isNew = new Date(product.createdAt).getTime() > Date.now() - 30 * 86400000;
+const image = product.images[0];
+const hoverImage = product.images[1];
+const rating = product.averageRating || 0;
+const reviewCount = product.reviewCount || 0;
+---
+
+<a
+  href={`/products/${product.handle}`}
+  class={cn("group block", className)}
+  data-product-card
+>
+  <div class={cn("relative overflow-hidden rounded-lg bg-base-200 mb-3", getAspectRatioClass(aspectRatio))}>
+    {image && (
+      <img
+        src={image.src}
+        alt={image.alt}
+        width={image.width}
+        height={image.height}
+        loading="lazy"
+        decoding="async"
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+      />
+    )}
+    {hoverImage && (
+      <img
+        src={hoverImage.src}
+        alt={hoverImage.alt}
+        width={hoverImage.width}
+        height={hoverImage.height}
+        loading="lazy"
+        decoding="async"
+        class="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+      />
+    )}
+
+    <!-- Badges -->
+    <div class="absolute top-2 left-2 flex flex-wrap gap-1.5">
+      {hasSale && <Badge variant="sale">Sale</Badge>}
+      {isNew && <Badge variant="new">New</Badge>}
+      {!product.available && <Badge variant="sold-out">Sold Out</Badge>}
+    </div>
+
+    <!-- Quick add button (visible on hover) -->
+    {product.available && product.variants.length > 0 && (
+      <button
+        type="button"
+        class="absolute bottom-3 left-3 right-3 py-2.5 bg-primary text-primary-content text-sm font-medium rounded-md opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0"
+        data-quick-add={product.variants[0].id}
+        data-product-title={product.title}
+        data-variant-title={product.variants[0].title}
+        data-price={product.variants[0].price}
+        data-image-src={product.images[0]?.src || ""}
+        data-image-alt={product.images[0]?.alt || ""}
+        data-image-width={product.images[0]?.width || 800}
+        data-image-height={product.images[0]?.height || 600}
+        data-product-id={product.id}
+        data-handle={product.handle}
+      >
+        Quick Add
+      </button>
+    )}
+  </div>
+
+  <div class="space-y-1">
+    {showVendor && (
+      <p class="text-xs text-base-300 uppercase tracking-wide">{product.vendor}</p>
+    )}
+    <h3 class="text-sm font-medium text-base-content group-hover:underline line-clamp-2">
+      {product.title}
+    </h3>
+    {showRating && reviewCount > 0 && (
+      <div class="flex items-center gap-1">
+        <div class="flex items-center">
+          {Array.from({ length: 5 }, (_, i) => (
+            <Icon
+              name={i < Math.round(rating) ? "starFilled" : "star"}
+              size="sm"
+              class={i < Math.round(rating) ? "text-secondary" : "text-base-300"}
+            />
+          ))}
+        </div>
+        <span class="text-xs text-base-300">({reviewCount})</span>
+      </div>
+    )}
+    <Price
+      price={product.priceRange.min}
+      compareAtPrice={product.compareAtPriceRange?.min}
+      size="sm"
+    />
+  </div>
+</a>
+
+<script>
+  // Quick add to cart
+  document.querySelectorAll<HTMLButtonElement>("[data-quick-add]").forEach((btn) => {
+    btn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const variantId = btn.dataset.quickAdd!;
+      const { addItem } = await import("../../store/cart");
+      const { openCart } = await import("../../store/ui");
+
+      const image = {
+        id: "img",
+        src: btn.dataset.imageSrc || "",
+        alt: btn.dataset.imageAlt || "",
+        width: parseInt(btn.dataset.imageWidth || "800"),
+        height: parseInt(btn.dataset.imageHeight || "600"),
+        position: 0,
+      };
+
+      await addItem(variantId, 1, {
+        productId: btn.dataset.productId || "",
+        handle: btn.dataset.handle || "",
+        title: btn.dataset.productTitle || "",
+        variantTitle: btn.dataset.variantTitle || "",
+        image,
+        price: parseFloat(btn.dataset.price || "0"),
+      });
+
+      openCart();
+    });
+  });
+</script>

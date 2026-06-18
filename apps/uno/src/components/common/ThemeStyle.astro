@@ -1,0 +1,13 @@
+---
+import type { ThemeConfig } from "../../data/types";
+import { themeToCSSProperties } from "../../theme/loader";
+
+interface Props {
+  theme: ThemeConfig;
+}
+
+const { theme } = Astro.props;
+const cssVars = themeToCSSProperties(theme);
+---
+
+<Fragment set:html={`<style>:root { ${cssVars} }</style>`} />

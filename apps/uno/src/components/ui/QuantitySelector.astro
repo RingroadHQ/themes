@@ -1,0 +1,95 @@
+---
+import { cn } from "../../utils/format";
+import Icon from "./Icon.astro";
+
+interface Props {
+  name?: string;
+  value?: number;
+  min?: number;
+  max?: number;
+  size?: "sm" | "md";
+  class?: string;
+}
+
+const {
+  name = "quantity",
+  value = 1,
+  min = 1,
+  max = 99,
+  size = "md",
+  class: className,
+} = Astro.props;
+
+const sizeClasses: Record<string, string> = {
+  sm: "h-8 text-sm",
+  md: "h-10 text-sm",
+};
+---
+
+<div
+  class={cn("inline-flex items-center border border-base-300 rounded-md overflow-hidden", sizeClasses[size], className)}
+  data-quantity-selector
+  data-min={min}
+  data-max={max}
+>
+  <button
+    type="button"
+    data-action="decrement"
+    disabled={value <= min}
+    class="h-full px-2 flex items-center justify-center text-base-content hover:bg-base-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+    aria-label="Decrease quantity"
+  >
+    <Icon name="minus" size="sm" />
+  </button>
+  <input
+    type="number"
+    name={name}
+    value={value}
+    min={min}
+    max={max}
+    readonly
+    class="w-10 text-center border-x border-base-300 bg-transparent text-base-content font-medium [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+    aria-label="Quantity"
+  />
+  <button
+    type="button"
+    data-action="increment"
+    disabled={value >= max}
+    class="h-full px-2 flex items-center justify-center text-base-content hover:bg-base-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+    aria-label="Increase quantity"
+  >
+    <Icon name="plus" size="sm" />
+  </button>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLDivElement>("[data-quantity-selector]").forEach((el) => {
+    const input = el.querySelector<HTMLInputElement>("input[type=number]");
+    const decBtn = el.querySelector<HTMLButtonElement>("[data-action=decrement]");
+    const incBtn = el.querySelector<HTMLButtonElement>("[data-action=increment]");
+    if (!input || !decBtn || !incBtn) return;
+
+    const min = parseInt(el.dataset.min || "1");
+    const max = parseInt(el.dataset.max || "99");
+
+    decBtn.addEventListener("click", () => {
+      const current = parseInt(input.value);
+      if (current > min) {
+        input.value = String(current - 1);
+        input.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+      decBtn.disabled = parseInt(input.value) <= min;
+      incBtn.disabled = parseInt(input.value) >= max;
+    });
+
+    incBtn.addEventListener("click", () => {
+      const current = parseInt(input.value);
+      if (current < max) {
+        input.value = String(current + 1);
+        input.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+      decBtn.disabled = parseInt(input.value) <= min;
+      incBtn.disabled = parseInt(input.value) >= max;
+    });
+  });
+</script>

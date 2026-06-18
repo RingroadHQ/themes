@@ -1,0 +1,43 @@
+---
+import Input from "../ui/Input.astro";
+import Button from "../ui/Button.astro";
+import { cn } from "../../utils/format";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<form class={cn("space-y-4", className)} data-payment-form>
+  <h2 class="text-xl font-heading font-bold text-base-content">Payment</h2>
+  <p class="text-sm text-base-300">This is a demo. No real payment will be processed.</p>
+
+  <Input label="Card Number" name="cardNumber" placeholder="4111 1111 1111 1111" required autocomplete="cc-number" />
+
+  <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+    <Input label="Expiry (MM/YY)" name="expiry" placeholder="12/28" required autocomplete="cc-exp" />
+    <Input label="CVC" name="cvc" placeholder="123" required autocomplete="cc-csc" />
+  </div>
+
+  <Input label="Name on Card" name="cardName" required autocomplete="cc-name" />
+
+  <Button type="submit" variant="primary" size="lg" fullWidth data-place-order>
+    Place Order
+  </Button>
+</form>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>("[data-payment-form]").forEach((form) => {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const paymentData = Object.fromEntries(formData.entries());
+      form.dispatchEvent(new CustomEvent("payment-submit", {
+        detail: paymentData,
+        bubbles: true,
+      }));
+    });
+  });
+</script>

@@ -1,0 +1,89 @@
+---
+import type { ProductReview } from "../../data/types";
+import Icon from "../ui/Icon.astro";
+import { cn } from "../../utils/format";
+
+interface Props {
+  reviews: ProductReview[];
+  averageRating: number;
+  reviewCount: number;
+  class?: string;
+}
+
+const { reviews, averageRating, reviewCount, class: className } = Astro.props;
+
+if (!reviews || reviews.length === 0) return;
+---
+
+<div class={cn("space-y-8", className)}>
+  <h2 class="text-2xl font-heading font-bold text-base-content">Customer Reviews</h2>
+
+  <!-- Rating summary -->
+  <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6 p-6 bg-base-200 rounded-lg">
+    <div class="text-center">
+      <p class="text-4xl font-heading font-bold text-base-content">{averageRating.toFixed(1)}</p>
+      <div class="flex items-center justify-center mt-1">
+        {Array.from({ length: 5 }, (_, i) => (
+          <Icon
+            name={i < Math.round(averageRating) ? "starFilled" : "star"}
+            size="sm"
+            class={i < Math.round(averageRating) ? "text-secondary" : "text-base-300"}
+          />
+        ))}
+      </div>
+      <p class="text-sm text-base-300 mt-1">{reviewCount} review{reviewCount !== 1 ? "s" : ""}</p>
+    </div>
+
+    <!-- Distribution bars -->
+    <div class="flex-1 space-y-1.5">
+      {[5, 4, 3, 2, 1].map((star) => {
+        const count = reviews.filter((r) => Math.round(r.rating) === star).length;
+        const pct = reviewCount > 0 ? (count / reviewCount) * 100 : 0;
+        return (
+          <div class="flex items-center gap-2 text-sm">
+            <span class="w-6 text-right text-base-300">{star}</span>
+            <Icon name="starFilled" size="sm" class="text-secondary" />
+            <div class="flex-1 h-2 bg-base-300 rounded-full overflow-hidden">
+              <div class="h-full bg-secondary rounded-full transition-all" style={`width: ${pct}%`}></div>
+            </div>
+            <span class="w-8 text-xs text-base-300">{count}</span>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+
+  <!-- Review cards -->
+  <div class="space-y-6">
+    {reviews.map((review) => (
+      <div class="border-b border-base-200 pb-6 last:border-0">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-full bg-base-200 flex items-center justify-center text-sm font-medium text-base-content">
+              {review.author.charAt(0)}
+            </div>
+            <span class="text-sm font-medium text-base-content">{review.author}</span>
+          </div>
+          <span class="text-xs text-base-300">
+            {new Date(review.createdAt).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </span>
+        </div>
+        <div class="flex items-center gap-0.5 mb-2">
+          {Array.from({ length: 5 }, (_, i) => (
+            <Icon
+              name={i < review.rating ? "starFilled" : "star"}
+              size="sm"
+              class={i < review.rating ? "text-secondary" : "text-base-300"}
+            />
+          ))}
+        </div>
+        <h4 class="text-sm font-semibold text-base-content mb-1">{review.title}</h4>
+        <p class="text-sm text-base-300 leading-relaxed">{review.body}</p>
+      </div>
+    ))}
+  </div>
+</div>

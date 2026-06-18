@@ -1,0 +1,79 @@
+---
+import type { SEOData, ThemeConfig } from "../data/types";
+import SEO from "../components/common/SEO.astro";
+import ThemeStyle from "../components/common/ThemeStyle.astro";
+import AnnouncementBar from "../components/layout/AnnouncementBar.astro";
+import Header from "../components/layout/Header.astro";
+import Footer from "../components/layout/Footer.astro";
+import CartDrawer from "../components/cart/CartDrawer.astro";
+import "../styles/global.css";
+
+interface Props {
+  seo: SEOData;
+  theme: ThemeConfig;
+}
+
+const { seo, theme } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href={theme.favicon || "/favicon.svg"} />
+    <link rel="icon" href="/favicon.ico" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <SEO {...seo} />
+    <ThemeStyle theme={theme} />
+    <!-- Skip to content -->
+    <style is:global>
+      .skip-to-content {
+        position: absolute;
+        top: -100%;
+        left: 16px;
+        z-index: 100;
+        padding: 8px 16px;
+        background: var(--color-primary);
+        color: var(--color-primary-content);
+        border-radius: 0 0 var(--radius-md) var(--radius-md);
+        font-size: 14px;
+        font-weight: 500;
+        transition: top 0.2s;
+      }
+      .skip-to-content:focus {
+        top: 0;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <a href="#main-content" class="skip-to-content">Skip to content</a>
+
+    <AnnouncementBar
+      enabled={theme.announcement.enabled}
+      text={theme.announcement.text}
+      link={theme.announcement.link}
+    />
+    <Header
+      navigation={theme.navigation.main}
+      logo={theme.logo}
+      storeName={theme.storeName}
+    />
+    <main id="main-content" class="flex-1">
+      <slot />
+    </main>
+    <Footer
+      navigation={theme.navigation.footer}
+      social={theme.social}
+      footer={theme.footer}
+    />
+    <CartDrawer />
+  </body>
+</html>

@@ -1,0 +1,72 @@
+---
+import Input from "../ui/Input.astro";
+import Button from "../ui/Button.astro";
+import { cn } from "../../utils/format";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class={cn("max-w-md", className)}>
+  <h1 class="text-2xl font-heading font-bold text-base-content mb-6">Create Account</h1>
+
+  <form class="space-y-4" data-register-form>
+    <div class="grid grid-cols-2 gap-4">
+      <Input label="First Name" name="firstName" required autocomplete="given-name" />
+      <Input label="Last Name" name="lastName" required autocomplete="family-name" />
+    </div>
+    <Input label="Email" name="email" type="email" required autocomplete="email" />
+    <Input label="Password" name="password" type="password" required autocomplete="new-password" />
+
+    <Button type="submit" variant="primary" fullWidth size="lg" data-register-submit>
+      Create Account
+    </Button>
+
+    <p class="text-sm text-center text-base-300">
+      Already have an account? <a href="/account/login" class="text-primary hover:underline">Sign in</a>
+    </p>
+
+    <p class="text-sm text-error hidden" data-register-error></p>
+  </form>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>("[data-register-form]").forEach((form) => {
+    const errorEl = form.querySelector<HTMLElement>("[data-register-error]");
+    const submitBtn = form.querySelector<HTMLButtonElement>("[data-register-submit]");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Creating account...";
+      }
+
+      const formData = new FormData(form);
+      const { register } = await import("../../data/api/account");
+      const result = await register({
+        firstName: formData.get("firstName") as string,
+        lastName: formData.get("lastName") as string,
+        email: formData.get("email") as string,
+        password: formData.get("password") as string,
+      });
+
+      if ("error" in result) {
+        if (errorEl) {
+          errorEl.textContent = result.error;
+          errorEl.classList.remove("hidden");
+        }
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Create Account";
+        }
+      } else {
+        localStorage.setItem("ringroad:auth-token", result.token);
+        window.location.href = "/account";
+      }
+    });
+  });
+</script>
