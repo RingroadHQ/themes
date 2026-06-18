@@ -24,8 +24,8 @@ export const defaultTheme: ThemeConfig = {
     error: "#9b2c2c",
   },
   typography: {
-    headingFont: "'Playfair Display', ui-serif, Georgia, serif",
-    bodyFont: "'Inter', ui-sans-serif, system-ui, sans-serif",
+    headingFont: "'Old Standard TT', ui-serif, Georgia, serif",
+    bodyFont: "'Google Sans Flex', 'Google Sans', ui-sans-serif, system-ui, sans-serif",
     baseSize: "16px",
     headingWeight: "400",
   },

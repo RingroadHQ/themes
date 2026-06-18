@@ -15,8 +15,8 @@
   --color-warning: #b07d2e;
   --color-error: #9b2c2c;
 
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-heading: "Playfair Display", ui-serif, Georgia, serif;
+  --font-sans: "Google Sans Flex", "Google Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-heading: "Old Standard TT", ui-serif, Georgia, serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 
   --radius-sm: 0;
