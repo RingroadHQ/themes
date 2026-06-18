@@ -3,7 +3,7 @@ title: "Leather Wallet Care Guide: How to Make Your Wallet Last a Lifetime"
 description: "Simple steps to clean, condition, and protect your leather wallet. Extend its life and enhance its natural patina."
 publishDate: 2026-05-15
 author: "elora"
-image: "https://picsum.photos/id/40/1200/800"
+image: "https://images.unsplash.com/photo-1628483211662-9bcc692c46dc?w=1200&h=800&fit=crop&auto=format"
 tags: ["care", "leather", "maintenance"]
 ---
 

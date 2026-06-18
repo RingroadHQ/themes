@@ -21,7 +21,7 @@ export function getPlaceholderImage(
   width: number = 800,
   height: number = 600
 ): string {
-  return `https://picsum.photos/id/10/${width}/${height}`;
+  return `https://images.unsplash.com/photo-1624538000860-24716b9050f2?w=${width}&h=${height}&fit=crop&auto=format`;
 }
 
 /**

@@ -1,16 +1,33 @@
 import type { Product, ProductVariant, Collection, NavLink } from "../types";
 
 // ============================================================================
-// Helper to generate placeholder images via Lorem Picsum
-// Each photo ID returns a consistent, real photograph
+// Quality brand images — verified Unsplash photos of wallets & leather goods
 // ============================================================================
-function img(seed: number, w = 800, h = 600): string {
-  const picsumIds = [
-    10, 11, 20, 21, 30, 31, 40, 41, 50, 51, 60, 61, 70, 71, 80, 81, 90, 91, 100,
-    101,
+function img(index: number, w = 800, h = 600): string {
+  const photos = [
+    "photo-1627688371237-be0253a36955", // person with brown leather bifold wallet
+    "photo-1601592996763-f05c9c80a7f1", // black leather bifold on white surface
+    "photo-1620109176813-e91290f6c795", // brown leather bifold on dark leather
+    "photo-1624538000860-24716b9050f2", // brown leather bifold on white table
+    "photo-1612023395494-1c4050b68647", // black leather bifold on wooden table
+    "photo-1614330315526-166f2d71e544", // brown leather bifold on concrete
+    "photo-1579014134953-1580d7f123f3", // black leather wallet
+    "photo-1689844820934-46edfdff7cf9", // wallet, card case, keys flat lay
+    "photo-1689844832057-a7342ac9a375", // watch and wallet on table
+    "photo-1628483211662-9bcc692c46dc", // leather craft tools and wallet
+    "photo-1627123424574-724758594e93", // brown leather wallet detail
+    "photo-1604068549290-dea0e4a305ca", // wallet with cards
+    "photo-1598532163257-ae3c6b2524b6", // minimalist wallet
+    "photo-1511499767150-a48a237f0083", // travel wallet with passport
+    "photo-1614064641938-3bbee52942c7", // card holder
+    "photo-1560472354-b33ff0c44a43", // wallet on desk
+    "photo-1553062407-98eeb64c6a62", // leather craft artisan
+    "photo-1576872381149-7847515ce5d8", // handmade leather wallet
+    "photo-1620020905503-1316f1b1fa0e", // wallet and keys
+    "photo-1614632537193-4ecae7cf6eb0", // slim wallet
   ];
-  const photoId = picsumIds[seed % picsumIds.length];
-  return `https://picsum.photos/id/${photoId}/${w}/${h}`;
+  const photo = photos[index % photos.length];
+  return `https://images.unsplash.com/${photo}?w=${w}&h=${h}&fit=crop&auto=format`;
 }
 
 // ============================================================================

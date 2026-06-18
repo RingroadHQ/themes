@@ -3,7 +3,7 @@ title: "RFID Blocking Explained: What It Is and Why Your Wallet Needs It"
 description: "Understand RFID technology, the real risks of digital skimming, and how RFID-blocking wallets protect your data."
 publishDate: 2026-03-10
 author: "elora"
-image: "https://picsum.photos/id/40/1200/800"
+image: "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=1200&h=800&fit=crop&auto=format"
 tags: ["rfid", "security", "technology"]
 ---
 

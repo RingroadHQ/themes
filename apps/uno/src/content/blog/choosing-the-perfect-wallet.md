@@ -3,7 +3,7 @@ title: "How to Choose the Perfect Leather Wallet: A Complete Guide"
 description: "Learn how to select the ideal leather wallet for your lifestyle, from bifolds to cardholders to travel wallets."
 publishDate: 2026-06-01
 author: "elora"
-image: "https://picsum.photos/id/40/1200/800"
+image: "https://images.unsplash.com/photo-1620109176813-e91290f6c795?w=1200&h=800&fit=crop&auto=format"
 tags: ["guide", "leather", "how-to"]
 ---
 

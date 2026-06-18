@@ -3,7 +3,7 @@ title: "The Minimalist Wallet Movement: Why Less Is More in 2026"
 description: "Discover why minimalist wallets are dominating the market and how to embrace the trend without sacrificing functionality."
 publishDate: 2026-04-20
 author: "elora"
-image: "https://picsum.photos/id/40/1200/800"
+image: "https://images.unsplash.com/photo-1598532163257-ae3c6b2524b6?w=1200&h=800&fit=crop&auto=format"
 tags: ["minimalist", "trends", "lifestyle"]
 ---
 
