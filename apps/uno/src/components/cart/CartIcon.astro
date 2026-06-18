@@ -19,7 +19,7 @@ const { count = 0, class: className } = Astro.props;
   <Icon name="cart" size="md" />
   <span
     class={cn(
-      "absolute -top-0.5 -right-0.5 w-5 h-5 flex items-center justify-center bg-primary text-primary-content text-xs font-bold rounded-full",
+      "absolute -top-0.5 -right-0.5 w-5 h-5 flex items-center justify-center bg-primary text-primary-content text-xs font-normal rounded-full",
       count === 0 ? "hidden" : ""
     )}
     data-cart-count

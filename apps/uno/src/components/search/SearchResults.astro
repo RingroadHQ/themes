@@ -23,21 +23,21 @@ if (!query) return;
   {results.totalResults === 0 ? (
     <div class="text-center py-16">
       <Icon name="search" size="xl" class="mx-auto mb-3 opacity-30 w-12 h-12" />
-      <p class="text-lg font-medium text-base-content">No results found</p>
+      <p class="text-lg font-normal text-base-content">No results found</p>
       <p class="text-sm text-base-300 mt-1">Try a different search term or browse our collections.</p>
     </div>
   ) : (
     <>
       {results.products.length > 0 && (
         <div class="mb-10">
-          <h2 class="text-lg font-heading font-bold text-base-content mb-4">Products</h2>
+          <h2 class="text-lg font-heading font-normal text-base-content mb-4">Products</h2>
           <ProductGrid products={results.products} columns={4} />
         </div>
       )}
 
       {results.collections.length > 0 && (
         <div class="mb-10">
-          <h2 class="text-lg font-heading font-bold text-base-content mb-4">Collections</h2>
+          <h2 class="text-lg font-heading font-normal text-base-content mb-4">Collections</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {results.collections.map((c) => (
               <a
@@ -54,7 +54,7 @@ if (!query) return;
                   />
                 )}
                 <div>
-                  <p class="font-medium text-base-content">{c.title}</p>
+                  <p class="font-normal text-base-content">{c.title}</p>
                   <p class="text-sm text-base-300 line-clamp-2">{c.description}</p>
                 </div>
               </a>
@@ -65,7 +65,7 @@ if (!query) return;
 
       {results.pages.length > 0 && (
         <div>
-          <h2 class="text-lg font-heading font-bold text-base-content mb-4">Pages</h2>
+          <h2 class="text-lg font-heading font-normal text-base-content mb-4">Pages</h2>
           <ul class="space-y-2">
             {results.pages.map((p) => (
               <li>

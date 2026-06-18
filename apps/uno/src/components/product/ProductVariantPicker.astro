@@ -43,7 +43,7 @@ const colorMap: Record<string, string> = {
 <div class={cn("space-y-4", className)} data-variant-picker>
   {options.map((option) => (
     <fieldset>
-      <legend class="text-sm font-medium text-base-content mb-2">
+      <legend class="text-sm font-normal text-base-content mb-2">
         {option.name}: <span class="font-normal text-base-300">{selectedOptions[option.name] || "Select"}</span>
       </legend>
       {isColorOption(option.name) ? (
@@ -87,7 +87,7 @@ const colorMap: Record<string, string> = {
                 class={cn(
                   "px-4 py-2 text-sm rounded-md border transition-all",
                   isSelected
-                    ? "border-primary bg-primary/5 text-primary font-medium"
+                    ? "border-primary bg-primary/5 text-primary font-normal"
                     : "border-base-300 text-base-content hover:border-base-content"
                 )}
               >

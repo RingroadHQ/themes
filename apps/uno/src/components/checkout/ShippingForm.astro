@@ -11,7 +11,7 @@ const { class: className } = Astro.props;
 ---
 
 <form class={cn("space-y-4", className)} data-shipping-form>
-  <h2 class="text-xl font-heading font-bold text-base-content">Shipping Address</h2>
+  <h2 class="text-xl font-heading font-normal text-base-content">Shipping Address</h2>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     <Input label="First Name" name="firstName" required autocomplete="given-name" />

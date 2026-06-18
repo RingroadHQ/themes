@@ -21,7 +21,7 @@ import { cn } from "../../utils/format";
     data-cart-panel
   >
     <div class="flex items-center justify-between p-4 border-b border-base-200">
-      <h2 class="text-lg font-heading font-bold text-base-content">
+      <h2 class="text-lg font-heading font-normal text-base-content">
         Your Cart
         <span class="text-sm font-normal text-base-300 ml-1" data-cart-item-count></span>
       </h2>
@@ -39,7 +39,7 @@ import { cn } from "../../utils/format";
       <!-- Items rendered by client JS -->
       <div class="text-center py-12 text-base-300">
         <Icon name="cart" size="xl" class="mx-auto mb-3 opacity-30" />
-        <p class="text-lg font-medium">Your cart is empty</p>
+        <p class="text-lg font-normal">Your cart is empty</p>
         <p class="text-sm mt-1">Add some wallets to get started.</p>
       </div>
     </div>
@@ -47,7 +47,7 @@ import { cn } from "../../utils/format";
     <div class="border-t border-base-200 p-4 space-y-3" data-cart-footer>
       <div class="flex justify-between items-center text-sm">
         <span class="text-base-300">Subtotal</span>
-        <span class="font-semibold text-base-content" data-cart-subtotal>$0.00</span>
+        <span class="font-normal text-base-content" data-cart-subtotal>$0.00</span>
       </div>
       <p class="text-xs text-base-300">Shipping and taxes calculated at checkout.</p>
       <a href="/cart" class="block">
@@ -121,17 +121,17 @@ import { cn } from "../../utils/format";
           container.innerHTML = `
             <div class="text-center py-12 text-base-300">
               <svg class="mx-auto mb-3 opacity-30 w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-              <p class="text-lg font-medium">Your cart is empty</p>
+              <p class="text-lg font-normal">Your cart is empty</p>
             </div>`;
         } else {
           container.innerHTML = list.map((item) => `
             <div class="flex gap-3 py-3 border-b border-base-200">
               <img src="${item.image.src}" alt="${item.image.alt}" class="w-20 h-20 rounded-md object-cover bg-base-200" width="${item.image.width}" height="${item.image.height}" />
               <div class="flex-1 min-w-0">
-                <a href="/products/${item.handle}" class="text-sm font-medium text-base-content hover:underline line-clamp-1">${item.title}</a>
+                <a href="/products/${item.handle}" class="text-sm font-normal text-base-content hover:underline line-clamp-1">${item.title}</a>
                 <p class="text-xs text-base-300 mt-0.5">${item.variantTitle}</p>
                 <div class="flex items-center justify-between mt-2">
-                  <span class="text-sm font-medium">${formatPrice(item.price)}</span>
+                  <span class="text-sm font-normal">${formatPrice(item.price)}</span>
                   <div class="flex items-center gap-2">
                     <button data-cart-update="${item.id}" data-delta="-1" class="w-6 h-6 flex items-center justify-center rounded border border-base-300 text-sm hover:bg-base-200 transition-colors">−</button>
                     <span class="text-sm w-6 text-center">${item.quantity}</span>

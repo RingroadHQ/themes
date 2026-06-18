@@ -29,7 +29,7 @@ const sizeClasses: Record<string, string> = {
 
 <span class={cn("inline-flex items-baseline gap-2", sizeClasses[size], className)}>
   <span
-    class={hasSale ? "text-error font-semibold" : "text-base-content font-semibold"}
+    class={hasSale ? "text-error font-normal" : "text-base-content font-normal"}
     aria-label={`Price: ${formatPrice(price, currency)}`}
   >
     {formatPrice(price, currency)}

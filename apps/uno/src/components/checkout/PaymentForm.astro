@@ -11,7 +11,7 @@ const { class: className } = Astro.props;
 ---
 
 <form class={cn("space-y-4", className)} data-payment-form>
-  <h2 class="text-xl font-heading font-bold text-base-content">Payment</h2>
+  <h2 class="text-xl font-heading font-normal text-base-content">Payment</h2>
   <p class="text-sm text-base-300">This is a demo. No real payment will be processed.</p>
 
   <Input label="Card Number" name="cardNumber" placeholder="4111 1111 1111 1111" required autocomplete="cc-number" />

@@ -26,7 +26,7 @@ const { links } = Astro.props;
     data-mobile-menu-panel
   >
     <div class="flex items-center justify-between p-4 border-b border-base-200">
-      <span class="text-lg font-heading font-bold text-base-content">Menu</span>
+      <span class="text-lg font-heading font-normal text-base-content">Menu</span>
       <button
         type="button"
         data-mobile-menu-close
@@ -43,7 +43,7 @@ const { links } = Astro.props;
           <li>
             {link.children && link.children.length > 0 ? (
               <details class="group">
-                <summary class="flex items-center justify-between px-3 py-2.5 text-base font-medium text-base-content rounded-md cursor-pointer hover:bg-base-200 transition-colors list-none">
+                <summary class="flex items-center justify-between px-3 py-2.5 text-base font-normal text-base-content rounded-md cursor-pointer hover:bg-base-200 transition-colors list-none">
                   {link.title}
                   <Icon name="chevronDown" size="sm" class="group-open:rotate-180 transition-transform" />
                 </summary>
@@ -63,7 +63,7 @@ const { links } = Astro.props;
             ) : (
               <a
                 href={link.url}
-                class="block px-3 py-2.5 text-base font-medium text-base-content rounded-md hover:bg-base-200 transition-colors"
+                class="block px-3 py-2.5 text-base font-normal text-base-content rounded-md hover:bg-base-200 transition-colors"
               >
                 {link.title}
               </a>
@@ -74,7 +74,7 @@ const { links } = Astro.props;
     </nav>
 
     <div class="p-4 border-t border-base-200">
-      <a href="/account/login" class="block w-full text-center px-4 py-2.5 bg-primary text-primary-content rounded-md text-sm font-medium hover:opacity-90 transition-opacity">
+      <a href="/account/login" class="block w-full text-center px-4 py-2.5 bg-primary text-primary-content rounded-md text-sm font-normal hover:opacity-90 transition-opacity">
         Sign In
       </a>
     </div>

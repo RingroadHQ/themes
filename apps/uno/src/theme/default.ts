@@ -17,7 +17,7 @@ export const defaultTheme: ThemeConfig = {
     accentContent: "#ffffff",
     base100: "#fafaf9",
     base200: "#f2f0ed",
-    base300: "#a8a29e",
+    base300: "#6b6360",
     baseContent: "#171717",
     success: "#3b5e3b",
     warning: "#b07d2e",
@@ -27,7 +27,7 @@ export const defaultTheme: ThemeConfig = {
     headingFont: "'Playfair Display', ui-serif, Georgia, serif",
     bodyFont: "'Inter', ui-sans-serif, system-ui, sans-serif",
     baseSize: "16px",
-    headingWeight: "700",
+    headingWeight: "400",
   },
   navigation: {
     main: [

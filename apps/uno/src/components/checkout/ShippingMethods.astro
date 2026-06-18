@@ -14,7 +14,7 @@ const { rates, selectedRateId, class: className } = Astro.props;
 ---
 
 <div class={cn("space-y-4", className)} data-shipping-methods>
-  <h2 class="text-xl font-heading font-bold text-base-content">Shipping Method</h2>
+  <h2 class="text-xl font-heading font-normal text-base-content">Shipping Method</h2>
 
   <div class="space-y-3">
     {rates.map((rate) => {
@@ -37,10 +37,10 @@ const { rates, selectedRateId, class: className } = Astro.props;
             data-shipping-rate
           />
           <div class="flex-1">
-            <p class="text-sm font-medium text-base-content">{rate.title}</p>
+            <p class="text-sm font-normal text-base-content">{rate.title}</p>
             <p class="text-xs text-base-300">{rate.estimatedDays}</p>
           </div>
-          <span class={cn("text-sm font-semibold", isFree ? "text-success" : "text-base-content")}>
+          <span class={cn("text-sm font-normal", isFree ? "text-success" : "text-base-content")}>
             {isFree ? "Free" : formatPrice(rate.price)}
           </span>
         </label>

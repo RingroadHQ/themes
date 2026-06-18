@@ -58,10 +58,10 @@ const { class: className } = Astro.props;
 
   <!-- Filter panel -->
   <div class="hidden lg:block space-y-6" data-filter-panel>
-    <h3 class="text-sm font-semibold text-base-content uppercase tracking-wider">Filters</h3>
+    <h3 class="text-sm font-normal text-base-content uppercase tracking-wider">Filters</h3>
     {filterGroups.map((group) => (
       <fieldset>
-        <legend class="text-sm font-medium text-base-content mb-3">{group.name}</legend>
+        <legend class="text-sm font-normal text-base-content mb-3">{group.name}</legend>
         <div class="space-y-2">
           {group.options.map((opt) => (
             <label class="flex items-center gap-2.5 cursor-pointer group">

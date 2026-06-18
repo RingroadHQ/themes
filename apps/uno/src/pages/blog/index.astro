@@ -27,7 +27,7 @@ const theme = defaultTheme;
       ]}
     />
 
-    <h1 class="text-2xl md:text-3xl font-heading font-bold text-base-content mb-8">The Journal</h1>
+    <h1 class="text-2xl md:text-3xl font-heading font-normal text-base-content mb-8">The Journal</h1>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
       {sortedPosts.map((post) => (
@@ -55,7 +55,7 @@ const theme = defaultTheme;
                 ))}
               </div>
             )}
-            <h2 class="text-xl font-heading font-bold text-base-content group-hover:text-primary transition-colors mb-2">
+            <h2 class="text-xl font-heading font-normal text-base-content group-hover:text-primary transition-colors mb-2">
               {post.data.title}
             </h2>
             <p class="text-sm text-base-300 flex-1">{post.data.description}</p>

@@ -32,7 +32,7 @@ const { navigation, logo, storeName } = Astro.props;
         {logo ? (
           <img src={logo} alt={storeName} class="h-8 w-auto" />
         ) : (
-          <span class="text-xl font-heading font-bold text-primary tracking-tight">
+          <span class="text-xl font-heading font-normal text-primary tracking-tight">
             {storeName}
           </span>
         )}
@@ -72,7 +72,7 @@ const { navigation, logo, storeName } = Astro.props;
           <Icon name="cart" size="md" />
           <span
             id="cart-count-badge"
-            class="absolute -top-0.5 -right-0.5 w-5 h-5 flex items-center justify-center bg-primary text-primary-content text-xs font-bold rounded-full hidden"
+            class="absolute -top-0.5 -right-0.5 w-5 h-5 flex items-center justify-center bg-primary text-primary-content text-xs font-normal rounded-full hidden"
           >
             0
           </span>

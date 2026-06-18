@@ -29,7 +29,7 @@ for (const opt of product.options) {
       size="lg"
     />
     {product.compareAtPriceRange && (
-      <p class="text-sm text-success mt-1 font-medium">
+      <p class="text-sm text-success mt-1 font-normal">
         You save {Math.round((1 - product.priceRange.min / product.compareAtPriceRange.min) * 100)}%
       </p>
     )}

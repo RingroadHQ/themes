@@ -16,7 +16,7 @@ const { items, subtotal, shipping, tax, total, class: className } = Astro.props;
 ---
 
 <div class={cn("bg-base-200 rounded-lg p-6 space-y-4", className)}>
-  <h3 class="text-lg font-heading font-bold text-base-content">Order Summary</h3>
+  <h3 class="text-lg font-heading font-normal text-base-content">Order Summary</h3>
 
   <div class="space-y-3 max-h-64 overflow-y-auto">
     {items.map((item) => (
@@ -29,9 +29,9 @@ const { items, subtotal, shipping, tax, total, class: className } = Astro.props;
           height={item.image.height}
         />
         <div class="flex-1 min-w-0">
-          <p class="text-sm font-medium text-base-content line-clamp-1">{item.title}</p>
+          <p class="text-sm font-normal text-base-content line-clamp-1">{item.title}</p>
           <p class="text-xs text-base-300">{item.variantTitle} × {item.quantity}</p>
-          <p class="text-sm font-medium mt-0.5">{formatPrice(item.price * item.quantity)}</p>
+          <p class="text-sm font-normal mt-0.5">{formatPrice(item.price * item.quantity)}</p>
         </div>
       </div>
     ))}
@@ -54,7 +54,7 @@ const { items, subtotal, shipping, tax, total, class: className } = Astro.props;
     </div>
   </div>
 
-  <div class="border-t border-base-300 pt-3 flex justify-between text-base font-bold">
+  <div class="border-t border-base-300 pt-3 flex justify-between text-base font-normal">
     <span>Total</span>
     <span>{formatPrice(total)}</span>
   </div>

@@ -25,11 +25,11 @@ const { item, class: className } = Astro.props;
     />
   </a>
   <div class="flex-1 min-w-0">
-    <a href={`/products/${item.handle}`} class="text-sm font-medium text-base-content hover:underline line-clamp-1">
+    <a href={`/products/${item.handle}`} class="text-sm font-normal text-base-content hover:underline line-clamp-1">
       {item.title}
     </a>
     <p class="text-xs text-base-300 mt-0.5">{item.variantTitle}</p>
-    <p class="text-sm font-medium mt-2">{formatPrice(item.price)}</p>
+    <p class="text-sm font-normal mt-2">{formatPrice(item.price)}</p>
     <div class="flex items-center justify-between mt-2">
       <QuantitySelector value={item.quantity} min={1} max={item.maxQuantity} size="sm" data-cart-item-id={item.id} />
       <button

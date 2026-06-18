@@ -65,14 +65,14 @@ const { initialQuery = "", class: className } = Astro.props;
               <a href="/products/${p.handle}" class="flex items-center gap-3 px-4 py-3 hover:bg-base-200 transition-colors">
                 <img src="${p.images[0]?.src}" alt="${p.title}" class="w-10 h-10 rounded object-cover bg-base-300" width="80" height="60" />
                 <div class="flex-1 min-w-0">
-                  <p class="text-sm font-medium text-base-content line-clamp-1">${p.title}</p>
+                  <p class="text-sm font-normal text-base-content line-clamp-1">${p.title}</p>
                   <p class="text-xs text-base-300">$${p.priceRange.min}</p>
                 </div>
               </a>`
               )
               .join("");
             results.innerHTML += `
-              <a href="/search?q=${encodeURIComponent(q)}" class="block text-center px-4 py-3 text-sm text-primary font-medium hover:bg-base-200 border-t border-base-200">
+              <a href="/search?q=${encodeURIComponent(q)}" class="block text-center px-4 py-3 text-sm text-primary font-normal hover:bg-base-200 border-t border-base-200">
                 View all results for "${q}"
               </a>`;
           }

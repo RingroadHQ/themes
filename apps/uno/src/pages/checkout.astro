@@ -21,7 +21,7 @@ const theme = defaultTheme;
   theme={theme}
 >
   <div class="container-page py-12">
-    <h1 class="text-2xl md:text-3xl font-heading font-bold text-base-content mb-8">Checkout</h1>
+    <h1 class="text-2xl md:text-3xl font-heading font-normal text-base-content mb-8">Checkout</h1>
 
     <div id="checkout-app" class="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-8">
       <!-- Checkout steps -->
@@ -46,9 +46,9 @@ const theme = defaultTheme;
           <div class="w-16 h-16 rounded-full bg-success/10 flex items-center justify-center mx-auto mb-4">
             <svg class="w-8 h-8 text-success" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
           </div>
-          <h2 class="text-2xl font-heading font-bold text-base-content mb-2">Order Confirmed!</h2>
+          <h2 class="text-2xl font-heading font-normal text-base-content mb-2">Order Confirmed!</h2>
           <p class="text-base-300 mb-6">Thank you for your order. You'll receive a confirmation email shortly.</p>
-          <a href="/" class="inline-flex items-center justify-center px-5 py-2.5 bg-primary text-primary-content rounded-md text-sm font-medium">Continue Shopping</a>
+          <a href="/" class="inline-flex items-center justify-center px-5 py-2.5 bg-primary text-primary-content rounded-md text-sm font-normal">Continue Shopping</a>
         </div>
       </div>
 
@@ -83,14 +83,14 @@ const theme = defaultTheme;
       if (summaryEl) {
         summaryEl.innerHTML = `
           <div class="bg-base-200 rounded-lg p-6 space-y-4">
-            <h3 class="text-lg font-heading font-bold text-base-content">Order Summary</h3>
+            <h3 class="text-lg font-heading font-normal text-base-content">Order Summary</h3>
             <div class="space-y-3 max-h-64 overflow-y-auto">${list.map((item) => `
               <div class="flex gap-3">
                 <img src="${item.image.src}" alt="${item.image.alt}" class="w-14 h-14 rounded-md object-cover bg-base-300" />
                 <div class="flex-1 min-w-0">
-                  <p class="text-sm font-medium line-clamp-1">${item.title}</p>
+                  <p class="text-sm font-normal line-clamp-1">${item.title}</p>
                   <p class="text-xs text-base-300">${item.variantTitle} × ${item.quantity}</p>
-                  <p class="text-sm font-medium">${formatPrice(item.price * item.quantity)}</p>
+                  <p class="text-sm font-normal">${formatPrice(item.price * item.quantity)}</p>
                 </div>
               </div>`).join("")}</div>
             <div class="border-t border-base-300 pt-3 space-y-1.5 text-sm">
@@ -98,7 +98,7 @@ const theme = defaultTheme;
               <div class="flex justify-between"><span class="text-base-300">Shipping</span><span class="${shipping === 0 ? 'text-success' : ''}">${shipping === 0 ? 'Free' : formatPrice(shipping)}</span></div>
               <div class="flex justify-between"><span class="text-base-300">Tax</span><span>${formatPrice(tax)}</span></div>
             </div>
-            <div class="border-t border-base-300 pt-3 flex justify-between text-base font-bold"><span>Total</span><span>${formatPrice(total)}</span></div>
+            <div class="border-t border-base-300 pt-3 flex justify-between text-base font-normal"><span>Total</span><span>${formatPrice(total)}</span></div>
           </div>`;
       }
     }
@@ -121,14 +121,14 @@ const theme = defaultTheme;
       const methodEl = stepMethod.querySelector("[data-shipping-methods]");
       if (methodEl) {
         methodEl.innerHTML = `
-          <h2 class="text-xl font-heading font-bold text-base-content">Shipping Method</h2>
+          <h2 class="text-xl font-heading font-normal text-base-content">Shipping Method</h2>
           <div class="space-y-3">${rates.map((rate: any) => `
             <label class="flex items-center gap-4 p-4 rounded-lg border-2 cursor-pointer transition-all ${rate.id === 'rate-standard' ? 'border-primary bg-primary/5' : 'border-base-200 hover:border-base-300'}">
               <input type="radio" name="shipping-rate" value="${rate.id}" ${rate.id === 'rate-standard' ? 'checked' : ''} class="w-4 h-4 text-primary" />
-              <div class="flex-1"><p class="text-sm font-medium text-base-content">${rate.title}</p><p class="text-xs text-base-300">${rate.estimatedDays}</p></div>
-              <span class="text-sm font-semibold ${rate.price === 0 ? 'text-success' : ''}">${rate.price === 0 ? 'Free' : formatPrice(rate.price)}</span>
+              <div class="flex-1"><p class="text-sm font-normal text-base-content">${rate.title}</p><p class="text-xs text-base-300">${rate.estimatedDays}</p></div>
+              <span class="text-sm font-normal ${rate.price === 0 ? 'text-success' : ''}">${rate.price === 0 ? 'Free' : formatPrice(rate.price)}</span>
             </label>`).join("")}</div>
-          <button id="btn-shipping-continue" class="mt-4 w-full inline-flex items-center justify-center px-5 py-2.5 bg-primary text-primary-content rounded-md text-sm font-medium">Continue to Payment</button>`;
+          <button id="btn-shipping-continue" class="mt-4 w-full inline-flex items-center justify-center px-5 py-2.5 bg-primary text-primary-content rounded-md text-sm font-normal">Continue to Payment</button>`;
 
         // Pre-select first rate
         selectedRate = rates[0];
