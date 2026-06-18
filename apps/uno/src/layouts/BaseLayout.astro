@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from "astro:transitions";
 import type { SEOData, ThemeConfig } from "../data/types";
 import SEO from "../components/common/SEO.astro";
 import ThemeStyle from "../components/common/ThemeStyle.astro";
@@ -28,11 +29,19 @@ const { seo, theme } = Astro.props;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap"
+    />
+    <link
       href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap"
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
     />
     <SEO {...seo} />
     <ThemeStyle theme={theme} />
+    <ClientRouter />
     <!-- Skip to content -->
     <style is:global>
       .skip-to-content {

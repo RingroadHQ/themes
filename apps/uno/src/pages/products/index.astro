@@ -13,41 +13,46 @@ const sort = (url.searchParams.get("sort") as SortOption) || "featured";
 const tags = url.searchParams.get("tags")?.split(",").filter(Boolean) || [];
 
 const { products, total } = await getProducts({
-  sort,
-  filters: tags.length > 0 ? { tags } : undefined,
+    sort,
+    filters: tags.length > 0 ? { tags } : undefined,
 });
 
 const theme = defaultTheme;
 ---
 
 <BaseLayout
-  seo={{
-    title: "All Wallets — Premium Leather Collection",
-    description: "Browse our complete collection of handcrafted leather wallets. Bifolds, cardholders, travel wallets, and more.",
-  }}
-  theme={theme}
+    seo={{
+        title: "All Wallets - Premium Leather Collection",
+        description:
+            "Browse our complete collection of handcrafted leather wallets. Bifolds, cardholders, travel wallets, and more.",
+    }}
+    theme={theme}
 >
-  <div class="container-page py-6">
-    <Breadcrumbs
-      crumbs={[
-        { title: "Home", url: "/" },
-        { title: "All Products", url: "" },
-      ]}
-    />
-  </div>
-
-  <div class="container-page pb-12">
-    <div class="flex items-center justify-between mb-6">
-      <div>
-        <h1 class="text-2xl md:text-3xl font-heading font-normal text-base-content">All Wallets</h1>
-        <p class="text-base-300 text-sm mt-1">{total} products</p>
-      </div>
-      <CollectionSort currentSort={sort} />
+    <div class="container-page py-6">
+        <Breadcrumbs
+            crumbs={[
+                { title: "Home", url: "/" },
+                { title: "All Products", url: "" },
+            ]}
+        />
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-8">
-      <CollectionFilters class="lg:sticky lg:top-24 lg:self-start" />
-      <ProductGrid products={products} columns={3} />
+    <div class="container-page pb-12">
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h1
+                    class="text-2xl md:text-3xl font-heading font-normal text-base-content"
+                >
+                    All Wallets
+                </h1>
+                <p class="text-base-300 text-sm mt-1">{total} products</p>
+            </div>
+            <CollectionSort currentSort={sort} />
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-8">
+            <CollectionFilters class="lg:sticky lg:top-24 lg:self-start" />
+            <ProductGrid products={products} columns={3} />
+        </div>
     </div>
-  </div>
 </BaseLayout>

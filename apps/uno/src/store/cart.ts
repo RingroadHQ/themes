@@ -4,7 +4,7 @@ import type { CartItem } from "../data/types";
 import { CART_STORAGE_KEY, CART_ID_KEY } from "../utils/constants";
 import * as cartApi from "../data/api/cart";
 
-// Persistent atoms — survive page reloads via localStorage
+// Persistent atoms - survive page reloads via localStorage
 export const cartId = persistentAtom<string | null>(CART_ID_KEY, null);
 export const items = persistentAtom<CartItem[]>(CART_STORAGE_KEY, [], {
   encode: JSON.stringify,
@@ -19,11 +19,11 @@ export const items = persistentAtom<CartItem[]>(CART_STORAGE_KEY, [], {
 
 // Computed values
 export const itemCount = computed(items, (list) =>
-  list.reduce((sum, item) => sum + item.quantity, 0)
+  list.reduce((sum, item) => sum + item.quantity, 0),
 );
 
 export const subtotal = computed(items, (list) =>
-  list.reduce((sum, item) => sum + item.price * item.quantity, 0)
+  list.reduce((sum, item) => sum + item.price * item.quantity, 0),
 );
 
 export const isEmpty = computed(items, (list) => list.length === 0);
@@ -39,7 +39,7 @@ export async function addItem(
     variantTitle: string;
     image: CartItem["image"];
     price: number;
-  }
+  },
 ): Promise<void> {
   const currentItems = items.get();
   const existing = currentItems.find((i) => i.variantId === variantId);
@@ -49,8 +49,8 @@ export async function addItem(
       currentItems.map((i) =>
         i.variantId === variantId
           ? { ...i, quantity: Math.min(i.quantity + quantity, i.maxQuantity) }
-          : i
-      )
+          : i,
+      ),
     );
   } else if (productData) {
     const newItem: CartItem = {
@@ -84,7 +84,7 @@ export async function addItem(
 
 export async function updateItem(
   itemId: string,
-  quantity: number
+  quantity: number,
 ): Promise<void> {
   if (quantity <= 0) {
     removeItem(itemId);
@@ -94,8 +94,10 @@ export async function updateItem(
   const currentItems = items.get();
   items.set(
     currentItems.map((i) =>
-      i.id === itemId ? { ...i, quantity: Math.min(quantity, i.maxQuantity) } : i
-    )
+      i.id === itemId
+        ? { ...i, quantity: Math.min(quantity, i.maxQuantity) }
+        : i,
+    ),
   );
 
   try {

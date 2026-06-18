@@ -19,7 +19,7 @@ You'll receive a tracking number via email as soon as your order ships. You can 
 
 ## International Shipping
 
-We ship to over 40 countries. International shipping rates are calculated at checkout based on destination and package weight. International orders may be subject to customs fees and import duties — these are the responsibility of the recipient.
+We ship to over 40 countries. International shipping rates are calculated at checkout based on destination and package weight. International orders may be subject to customs fees and import duties - these are the responsibility of the recipient.
 
 ## Free Shipping
 

@@ -39,4 +39,4 @@ A quality leather wallet ages beautifully. Lighter colors like tan and natural d
 
 ## The Right Choice
 
-The best wallet is one you love carrying. It should feel good in your hand, fit comfortably in your pocket, and hold exactly what you need — nothing more, nothing less.
+The best wallet is one you love carrying. It should feel good in your hand, fit comfortably in your pocket, and hold exactly what you need - nothing more, nothing less.

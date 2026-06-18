@@ -1,16 +1,14 @@
-import type {
-  Product,
-  ProductVariant,
-  Collection,
-  NavLink,
-} from "../types";
+import type { Product, ProductVariant, Collection, NavLink } from "../types";
 
 // ============================================================================
 // Helper to generate placeholder images via Lorem Picsum
 // Each photo ID returns a consistent, real photograph
 // ============================================================================
 function img(seed: number, w = 800, h = 600): string {
-  const picsumIds = [10, 11, 20, 21, 30, 31, 40, 41, 50, 51, 60, 61, 70, 71, 80, 81, 90, 91, 100, 101];
+  const picsumIds = [
+    10, 11, 20, 21, 30, 31, 40, 41, 50, 51, 60, 61, 70, 71, 80, 81, 90, 91, 100,
+    101,
+  ];
   const photoId = picsumIds[seed % picsumIds.length];
   return `https://picsum.photos/id/${photoId}/${w}/${h}`;
 }
@@ -23,7 +21,7 @@ function makeVariants(
   productId: string,
   options: { name: string; values: string[] }[],
   basePrice: number,
-  imageOffset = 0
+  imageOffset = 0,
 ): ProductVariant[] {
   const variants: ProductVariant[] = [];
   const [opt1, opt2] = options;
@@ -41,8 +39,7 @@ function makeVariants(
         option3: null,
         sku: `${productId.toUpperCase()}-${idx.toString().padStart(2, "0")}`,
         price: basePrice + priceMod,
-        compareAtPrice:
-          idx % 2 === 0 ? basePrice + priceMod + 15 : null,
+        compareAtPrice: idx % 2 === 0 ? basePrice + priceMod + 15 : null,
         available: idx !== 2,
         imageId: `${productId}-img-${(i + imageOffset) % 4}`,
       });
@@ -141,7 +138,7 @@ export const mockProducts: Product[] = [
     averageRating: 4.7,
     reviewCount: 3,
     seo: {
-      title: "Classic Leather Bifold — Premium Handcrafted Wallet",
+      title: "Classic Leather Bifold - Premium Handcrafted Wallet",
       description:
         "Handcrafted full-grain Italian leather bifold wallet with RFID blocking. 6 card slots, bill compartment. Ages beautifully. Free shipping over $75.",
     },
@@ -185,7 +182,11 @@ export const mockProducts: Product[] = [
     ],
     variants: [],
     options: [
-      { name: "Color", position: 1, values: ["Brown", "Black", "Burgundy", "Navy"] },
+      {
+        name: "Color",
+        position: 1,
+        values: ["Brown", "Black", "Burgundy", "Navy"],
+      },
     ],
     priceRange: { min: 49, max: 49 },
     compareAtPriceRange: { min: 65, max: 65 },
@@ -196,7 +197,7 @@ export const mockProducts: Product[] = [
     averageRating: 5,
     reviewCount: 0,
     seo: {
-      title: "Slim Cardholder — Minimalist Leather Wallet",
+      title: "Slim Cardholder - Minimalist Leather Wallet",
       description:
         "Ultra-slim leather cardholder for 8 cards with RFID blocking. 4mm thin profile. Perfect front-pocket minimalist wallet.",
     },
@@ -259,7 +260,7 @@ export const mockProducts: Product[] = [
     averageRating: 4.5,
     reviewCount: 0,
     seo: {
-      title: "Travel Wallet — Passport & Boarding Pass Organizer",
+      title: "Travel Wallet - Passport & Boarding Pass Organizer",
       description:
         "Full-featured travel wallet with passport pocket, boarding pass sleeve, 8 card slots, and RFID blocking. Saffiano leather.",
     },
@@ -315,7 +316,7 @@ export const mockProducts: Product[] = [
     averageRating: 0,
     reviewCount: 0,
     seo: {
-      title: "Money Clip Wallet — Magnetic Cash & Card Holder",
+      title: "Money Clip Wallet - Magnetic Cash & Card Holder",
       description:
         "Full-grain leather money clip wallet with magnetic clip, 4 card slots, and ID window. Slim 8mm profile.",
     },
@@ -378,7 +379,7 @@ export const mockProducts: Product[] = [
     averageRating: 5,
     reviewCount: 0,
     seo: {
-      title: "RFID Blocking Bifold — Secure Leather Wallet",
+      title: "RFID Blocking Bifold - Secure Leather Wallet",
       description:
         "Premium RFID-blocking bifold wallet with 8 card slots, full signal protection. Top-grain leather. Certified secure.",
     },
@@ -390,7 +391,7 @@ export const mockProducts: Product[] = [
     title: "Minimalist Front Pocket Wallet",
     description:
       "Designed for front-pocket carry. Ultra-thin, lightweight, and made from premium leather.",
-    descriptionHtml: `<p>The <strong>Minimalist Front Pocket Wallet</strong> is our thinnest wallet yet at just 3mm. Features:</p><ul><li>Holds up to 6 cards plus folded bills</li><li>Elastic band closure</li><li>Vegetable-tanned leather</li><li>Pull-tab for quick card access</li><li>Weighs only 45 grams</li></ul><p>You'll forget it's in your pocket — until you need it.</p>`,
+    descriptionHtml: `<p>The <strong>Minimalist Front Pocket Wallet</strong> is our thinnest wallet yet at just 3mm. Features:</p><ul><li>Holds up to 6 cards plus folded bills</li><li>Elastic band closure</li><li>Vegetable-tanned leather</li><li>Pull-tab for quick card access</li><li>Weighs only 45 grams</li></ul><p>You'll forget it's in your pocket - until you need it.</p>`,
     vendor: "elora",
     type: "Minimalist",
     tags: ["minimalist", "front-pocket", "slim", "lightweight"],
@@ -422,7 +423,11 @@ export const mockProducts: Product[] = [
     ],
     variants: [],
     options: [
-      { name: "Color", position: 1, values: ["Brown", "Black", "Tan", "Olive"] },
+      {
+        name: "Color",
+        position: 1,
+        values: ["Brown", "Black", "Tan", "Olive"],
+      },
     ],
     priceRange: { min: 39, max: 39 },
     compareAtPriceRange: null,
@@ -433,7 +438,7 @@ export const mockProducts: Product[] = [
     averageRating: 0,
     reviewCount: 0,
     seo: {
-      title: "Minimalist Front Pocket Wallet — Ultra-Thin 3mm",
+      title: "Minimalist Front Pocket Wallet - Ultra-Thin 3mm",
       description:
         "Ultra-thin 3mm front pocket wallet. Holds 6 cards. Vegetable-tanned leather. Only 45g. The lightest wallet you'll ever carry.",
     },
@@ -477,7 +482,11 @@ export const mockProducts: Product[] = [
     ],
     variants: [],
     options: [
-      { name: "Color", position: 1, values: ["Antique Brown", "Distressed Black"] },
+      {
+        name: "Color",
+        position: 1,
+        values: ["Antique Brown", "Distressed Black"],
+      },
     ],
     priceRange: { min: 99, max: 99 },
     compareAtPriceRange: { min: 129, max: 129 },
@@ -488,7 +497,7 @@ export const mockProducts: Product[] = [
     averageRating: 0,
     reviewCount: 0,
     seo: {
-      title: "Vintage Leather Bifold — Pre-Distressed Unique Wallet",
+      title: "Vintage Leather Bifold - Pre-Distressed Unique Wallet",
       description:
         "One-of-a-kind vintage leather bifold. Pre-distressed full-grain leather. Each wallet is unique. Hand-burnished edges.",
     },
@@ -532,7 +541,11 @@ export const mockProducts: Product[] = [
     ],
     variants: [],
     options: [
-      { name: "Color", position: 1, values: ["Black", "Dark Brown", "Burgundy"] },
+      {
+        name: "Color",
+        position: 1,
+        values: ["Black", "Dark Brown", "Burgundy"],
+      },
     ],
     priceRange: { min: 69, max: 69 },
     compareAtPriceRange: null,
@@ -543,7 +556,7 @@ export const mockProducts: Product[] = [
     averageRating: 0,
     reviewCount: 0,
     seo: {
-      title: "Executive Card Case — Italian Calfskin Professional Wallet",
+      title: "Executive Card Case - Italian Calfskin Professional Wallet",
       description:
         "Italian calfskin executive card case. Holds 6 cards plus folded bills. Hand-painted edges. Gift box included.",
     },
@@ -587,7 +600,11 @@ export const mockProducts: Product[] = [
     ],
     variants: [],
     options: [
-      { name: "Color", position: 1, values: ["Black", "Brown", "Navy", "Burgundy"] },
+      {
+        name: "Color",
+        position: 1,
+        values: ["Black", "Brown", "Navy", "Burgundy"],
+      },
     ],
     priceRange: { min: 45, max: 45 },
     compareAtPriceRange: null,
@@ -598,7 +615,7 @@ export const mockProducts: Product[] = [
     averageRating: 0,
     reviewCount: 0,
     seo: {
-      title: "RFID Passport Holder — Secure Travel Essential",
+      title: "RFID Passport Holder - Secure Travel Essential",
       description:
         "Slim RFID-blocking passport holder with card slots. Water-resistant leather. Fits standard passports. Travel security made elegant.",
     },
@@ -661,7 +678,7 @@ export const mockProducts: Product[] = [
     averageRating: 0,
     reviewCount: 0,
     seo: {
-      title: "Handmade Leather Zip Wallet — YKK Zip Around",
+      title: "Handmade Leather Zip Wallet - YKK Zip Around",
       description:
         "Artisan-crafted zip-around wallet with 10 card slots, coin pocket, and detachable wrist strap. Made in small batches.",
     },
@@ -673,7 +690,7 @@ export const mockProducts: Product[] = [
     title: "AirTag Compatible Bifold",
     description:
       "Never lose your wallet again. Built-in AirTag pocket discreetly integrated into the design.",
-    descriptionHtml: `<p>The <strong>AirTag Compatible Bifold</strong> features a precision-cut AirTag pocket:</p><ul><li>Discreet AirTag pocket (AirTag sold separately)</li><li>No bulge — sits flush within the leather</li><li>6 card slots with RFID blocking</li><li>Full bill compartment</li><li>Full-grain leather</li></ul><p>Peace of mind without compromising style.</p>`,
+    descriptionHtml: `<p>The <strong>AirTag Compatible Bifold</strong> features a precision-cut AirTag pocket:</p><ul><li>Discreet AirTag pocket (AirTag sold separately)</li><li>No bulge - sits flush within the leather</li><li>6 card slots with RFID blocking</li><li>Full bill compartment</li><li>Full-grain leather</li></ul><p>Peace of mind without compromising style.</p>`,
     vendor: "elora",
     type: "Bifold",
     tags: ["airtag", "tracking", "rfid", "tech"],
@@ -704,9 +721,7 @@ export const mockProducts: Product[] = [
       },
     ],
     variants: [],
-    options: [
-      { name: "Color", position: 1, values: ["Brown", "Black"] },
-    ],
+    options: [{ name: "Color", position: 1, values: ["Brown", "Black"] }],
     priceRange: { min: 89, max: 89 },
     compareAtPriceRange: null,
     available: true,
@@ -716,7 +731,7 @@ export const mockProducts: Product[] = [
     averageRating: 0,
     reviewCount: 0,
     seo: {
-      title: "AirTag Compatible Bifold Wallet — Find My Wallet",
+      title: "AirTag Compatible Bifold Wallet - Find My Wallet",
       description:
         "Never lose your wallet. Discreet AirTag pocket in a full-grain leather bifold with RFID blocking. Compatible with Apple AirTag.",
     },
@@ -771,7 +786,7 @@ export const mockProducts: Product[] = [
     averageRating: 0,
     reviewCount: 0,
     seo: {
-      title: "Carbon Fiber Minimalist Wallet — 28g Ultra-Light",
+      title: "Carbon Fiber Minimalist Wallet - 28g Ultra-Light",
       description:
         "3K carbon fiber minimalist wallet. RFID-blocking aluminum core. Weighs only 28g. Holds up to 12 cards.",
     },
@@ -834,7 +849,7 @@ export const mockProducts: Product[] = [
     averageRating: 5,
     reviewCount: 0,
     seo: {
-      title: "Premium Wallet Gift Set — Complete Leather Bundle",
+      title: "Premium Wallet Gift Set - Complete Leather Bundle",
       description:
         "Bifold wallet + matching key case + leather care kit in a premium gift box. Free gift wrapping. The perfect present.",
     },
@@ -878,7 +893,11 @@ export const mockProducts: Product[] = [
     ],
     variants: [],
     options: [
-      { name: "Color", position: 1, values: ["Tan", "Brown", "Black", "Olive"] },
+      {
+        name: "Color",
+        position: 1,
+        values: ["Tan", "Brown", "Black", "Olive"],
+      },
     ],
     priceRange: { min: 69, max: 69 },
     compareAtPriceRange: { min: 85, max: 85 },
@@ -889,7 +908,7 @@ export const mockProducts: Product[] = [
     averageRating: 0,
     reviewCount: 0,
     seo: {
-      title: "Slim Bifold — Modern Thin Leather Wallet",
+      title: "Slim Bifold - Modern Thin Leather Wallet",
       description:
         "Slim bifold at just 12mm thick. Vegetable-tanned leather with 4 card slots and hidden pockets. Modern profile.",
     },
@@ -900,7 +919,7 @@ export const mockProducts: Product[] = [
     handle: "weekender-wallet",
     title: "Weekender Wallet",
     description:
-      "The anything wallet. Holds everything you need for a weekend away — cards, cash, coins, keys.",
+      "The anything wallet. Holds everything you need for a weekend away - cards, cash, coins, keys.",
     descriptionHtml: `<p>The <strong>Weekender</strong> is our most versatile wallet. Built for those who need to carry more:</p><ul><li>12 card slots across two panels</li><li>Two bill compartments</li><li>Large zippered coin pocket</li><li>External quick-access slot</li><li>Detachable key ring</li><li>Reinforced stitching at all stress points</li></ul><p>When you need to carry it all, carry the Weekender.</p>`,
     vendor: "elora",
     type: "Large",
@@ -932,9 +951,7 @@ export const mockProducts: Product[] = [
       },
     ],
     variants: [],
-    options: [
-      { name: "Color", position: 1, values: ["Brown", "Black"] },
-    ],
+    options: [{ name: "Color", position: 1, values: ["Brown", "Black"] }],
     priceRange: { min: 109, max: 109 },
     compareAtPriceRange: null,
     available: true,
@@ -944,7 +961,7 @@ export const mockProducts: Product[] = [
     averageRating: 0,
     reviewCount: 0,
     seo: {
-      title: "Weekender Wallet — Large Capacity Leather Organizer",
+      title: "Weekender Wallet - Large Capacity Leather Organizer",
       description:
         "Large capacity wallet with 12 card slots, 2 bill compartments, zip coin pocket, and key ring. Built for the weekend.",
     },
@@ -988,7 +1005,11 @@ export const mockProducts: Product[] = [
     ],
     variants: [],
     options: [
-      { name: "Color", position: 1, values: ["Brown & Tan", "Black & Gray", "Navy & Brown"] },
+      {
+        name: "Color",
+        position: 1,
+        values: ["Brown & Tan", "Black & Gray", "Navy & Brown"],
+      },
     ],
     priceRange: { min: 79, max: 79 },
     compareAtPriceRange: { min: 99, max: 99 },
@@ -999,7 +1020,7 @@ export const mockProducts: Product[] = [
     averageRating: 0,
     reviewCount: 0,
     seo: {
-      title: "Woven Leather Cardholder — Hand-Woven Italian Leather",
+      title: "Woven Leather Cardholder - Hand-Woven Italian Leather",
       description:
         "Hand-woven Italian leather cardholder. Each weave is unique. Basketweave pattern. Holds 4-6 cards. Artisan craftsmanship.",
     },
@@ -1043,7 +1064,11 @@ export const mockProducts: Product[] = [
     ],
     variants: [],
     options: [
-      { name: "Color", position: 1, values: ["Black", "Coyote Brown", "Olive Drab"] },
+      {
+        name: "Color",
+        position: 1,
+        values: ["Black", "Coyote Brown", "Olive Drab"],
+      },
     ],
     priceRange: { min: 59, max: 59 },
     compareAtPriceRange: null,
@@ -1054,7 +1079,7 @@ export const mockProducts: Product[] = [
     averageRating: 0,
     reviewCount: 0,
     seo: {
-      title: "Tactical EDC Wallet — Rugged Everyday Carry",
+      title: "Tactical EDC Wallet - Rugged Everyday Carry",
       description:
         "1000D Cordura tactical wallet with integrated multi-tool, bottle opener, and RFID blocking. Water-resistant. Built for EDC.",
     },
@@ -1065,7 +1090,7 @@ export const mockProducts: Product[] = [
     handle: "engraved-monogram-wallet",
     title: "Engraved Monogram Bifold",
     description:
-      "Make it personal. Our classic bifold with custom monogram engraving — up to 3 initials.",
+      "Make it personal. Our classic bifold with custom monogram engraving - up to 3 initials.",
     descriptionHtml: `<p>The <strong>Engraved Monogram Bifold</strong> adds a personal touch to our bestselling classic:</p><ul><li>Custom monogram up to 3 characters</li><li>Choice of font style (Classic, Modern, Script)</li><li>Blind deboss or gold foil stamping</li><li>Full-grain Italian leather</li><li>6 card slots, 2 hidden pockets</li><li>Gift box included</li></ul><p>Makes an unforgettable gift. Production time: +2 days.</p>`,
     vendor: "elora",
     type: "Bifold",
@@ -1122,7 +1147,7 @@ export const mockProducts: Product[] = [
     averageRating: 0,
     reviewCount: 0,
     seo: {
-      title: "Engraved Monogram Bifold — Personalized Leather Wallet",
+      title: "Engraved Monogram Bifold - Personalized Leather Wallet",
       description:
         "Custom monogram bifold wallet. Up to 3 initials, choice of font and stamping. Full-grain Italian leather. Perfect gift.",
     },
@@ -1134,7 +1159,7 @@ export const mockProducts: Product[] = [
     title: "Copper RFID Card Sleeve",
     description:
       "Industrial-chic copper construction with RFID shielding. A unique, patina-developing card sleeve.",
-    descriptionHtml: `<p>The <strong>Copper RFID Card Sleeve</strong> is a work of industrial art:</p><ul><li>Solid copper body with RFID shielding</li><li>Develops a natural patina over time</li><li>Holds 4-6 cards snugly</li><li>Elastic retention system</li><li>Weighs 62g — satisfyingly substantial</li></ul><p>Each sleeve starts bright copper and develops its own unique character.</p>`,
+    descriptionHtml: `<p>The <strong>Copper RFID Card Sleeve</strong> is a work of industrial art:</p><ul><li>Solid copper body with RFID shielding</li><li>Develops a natural patina over time</li><li>Holds 4-6 cards snugly</li><li>Elastic retention system</li><li>Weighs 62g - satisfyingly substantial</li></ul><p>Each sleeve starts bright copper and develops its own unique character.</p>`,
     vendor: "elora",
     type: "Card Sleeve",
     tags: ["copper", "rfid", "metal", "patina"],
@@ -1166,7 +1191,11 @@ export const mockProducts: Product[] = [
     ],
     variants: [],
     options: [
-      { name: "Finish", position: 1, values: ["Polished Copper", "Brushed Copper"] },
+      {
+        name: "Finish",
+        position: 1,
+        values: ["Polished Copper", "Brushed Copper"],
+      },
     ],
     priceRange: { min: 49, max: 54 },
     compareAtPriceRange: null,
@@ -1177,7 +1206,7 @@ export const mockProducts: Product[] = [
     averageRating: 0,
     reviewCount: 0,
     seo: {
-      title: "Copper RFID Card Sleeve — Solid Copper EDC",
+      title: "Copper RFID Card Sleeve - Solid Copper EDC",
       description:
         "Solid copper RFID-blocking card sleeve. Develops unique patina. Holds 4-6 cards. 62g of industrial elegance.",
     },
@@ -1188,8 +1217,8 @@ export const mockProducts: Product[] = [
     handle: "heritage-leather-bifold",
     title: "Heritage Leather Bifold",
     description:
-      "Our flagship wallet. Made from the finest shell cordovan leather — the king of leathers.",
-    descriptionHtml: `<p>The <strong>Heritage Bifold</strong> represents the pinnacle of our craft. Made from rare Horween Shell Cordovan:</p><ul><li>Genuine Horween Shell Cordovan leather</li><li>Sourced from the historic Chicago tannery</li><li>8 card slots with rolled edges</li><li>2 hidden pockets with silk lining</li><li>Full bill compartment</li><li>Individually numbered</li><li>Comes with certificate of authenticity</li></ul><p>Shell Cordovan doesn't crease — it rolls. This wallet will outlast you.</p>`,
+      "Our flagship wallet. Made from the finest shell cordovan leather - the king of leathers.",
+    descriptionHtml: `<p>The <strong>Heritage Bifold</strong> represents the pinnacle of our craft. Made from rare Horween Shell Cordovan:</p><ul><li>Genuine Horween Shell Cordovan leather</li><li>Sourced from the historic Chicago tannery</li><li>8 card slots with rolled edges</li><li>2 hidden pockets with silk lining</li><li>Full bill compartment</li><li>Individually numbered</li><li>Comes with certificate of authenticity</li></ul><p>Shell Cordovan doesn't crease - it rolls. This wallet will outlast you.</p>`,
     vendor: "elora",
     type: "Bifold",
     tags: ["cordovan", "heritage", "premium", "flagship", "heirloom"],
@@ -1237,7 +1266,11 @@ export const mockProducts: Product[] = [
     ],
     variants: [],
     options: [
-      { name: "Color", position: 1, values: ["Color #8 (Burgundy)", "Black", "Dark Cognac"] },
+      {
+        name: "Color",
+        position: 1,
+        values: ["Color #8 (Burgundy)", "Black", "Dark Cognac"],
+      },
     ],
     priceRange: { min: 249, max: 249 },
     compareAtPriceRange: null,
@@ -1248,7 +1281,7 @@ export const mockProducts: Product[] = [
     averageRating: 0,
     reviewCount: 0,
     seo: {
-      title: "Heritage Bifold — Horween Shell Cordovan Wallet",
+      title: "Heritage Bifold - Horween Shell Cordovan Wallet",
       description:
         "Our flagship wallet in genuine Horween Shell Cordovan. Individually numbered. The finest leather wallet available. Heirloom quality.",
     },
@@ -1263,7 +1296,7 @@ for (const product of mockProducts) {
     product.id,
     product.options,
     product.priceRange.min,
-    0
+    0,
   );
 }
 
@@ -1292,10 +1325,10 @@ export const mockCollections: Collection[] = [
       (p) =>
         p.tags.includes("leather") ||
         p.tags.includes("bifold") ||
-        p.tags.includes("cordovan")
+        p.tags.includes("cordovan"),
     ),
     seo: {
-      title: "Leather Wallets — Premium Handcrafted Collection",
+      title: "Leather Wallets - Premium Handcrafted Collection",
       description:
         "Handcrafted leather wallets from Italian and American leathers. Bifolds, cardholders, and more.",
     },
@@ -1320,10 +1353,10 @@ export const mockCollections: Collection[] = [
       (p) =>
         p.tags.includes("minimalist") ||
         p.tags.includes("slim") ||
-        p.tags.includes("cardholder")
+        p.tags.includes("cardholder"),
     ),
     seo: {
-      title: "Minimalist Wallets — Slim & Lightweight Collection",
+      title: "Minimalist Wallets - Slim & Lightweight Collection",
       description:
         "Ultra-slim minimalist wallets under 8mm thick. Front-pocket designs for essential carry only.",
     },
@@ -1346,7 +1379,7 @@ export const mockCollections: Collection[] = [
     },
     products: mockProducts.filter((p) => p.tags.includes("travel")),
     seo: {
-      title: "Travel Wallets — Passport Holders & Organizers",
+      title: "Travel Wallets - Passport Holders & Organizers",
       description:
         "RFID-blocking travel wallets, passport holders, and travel organizers. Stay secure on every journey.",
     },
@@ -1369,7 +1402,7 @@ export const mockCollections: Collection[] = [
     },
     products: mockProducts.filter((p) => p.tags.includes("rfid")),
     seo: {
-      title: "RFID Safe Wallets — Digital Protection Collection",
+      title: "RFID Safe Wallets - Digital Protection Collection",
       description:
         "Certified RFID-blocking wallets. Protect your credit cards and ID from digital skimming.",
     },
@@ -1391,10 +1424,10 @@ export const mockCollections: Collection[] = [
       position: 0,
     },
     products: mockProducts.filter(
-      (p) => p.tags.includes("gift") || p.tags.includes("monogram")
+      (p) => p.tags.includes("gift") || p.tags.includes("monogram"),
     ),
     seo: {
-      title: "Gift Wallets — Premium Gift-Ready Collection",
+      title: "Gift Wallets - Premium Gift-Ready Collection",
       description:
         "Beautifully packaged wallets perfect for gifting. Premium gift boxes included. Free gift wrapping available.",
     },
@@ -1417,11 +1450,11 @@ export const mockCollections: Collection[] = [
     },
     products: mockProducts.filter((p) =>
       ["prod-011", "prod-012", "prod-014", "prod-016", "prod-019"].includes(
-        p.id
-      )
+        p.id,
+      ),
     ),
     seo: {
-      title: "New Arrivals — Latest Wallet Designs",
+      title: "New Arrivals - Latest Wallet Designs",
       description:
         "Discover our newest wallet designs. Fresh from the workshop and ready to ship.",
     },
@@ -1444,11 +1477,11 @@ export const mockCollections: Collection[] = [
     },
     products: mockProducts.filter((p) =>
       ["prod-001", "prod-002", "prod-006", "prod-005", "prod-020"].includes(
-        p.id
-      )
+        p.id,
+      ),
     ),
     seo: {
-      title: "Best Sellers — Most Popular Wallets",
+      title: "Best Sellers - Most Popular Wallets",
       description:
         "Our most loved wallets. The Classic Bifold, Slim Cardholder, and more customer favorites.",
     },

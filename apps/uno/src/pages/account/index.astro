@@ -10,35 +10,61 @@ const theme = defaultTheme;
 ---
 
 <BaseLayout
-  seo={{
-    title: "My Account — elora",
-    description: "Your account dashboard.",
-    noindex: true,
-  }}
-  theme={theme}
+    seo={{
+        title: "My Account - elora",
+        description: "Your account dashboard.",
+        noindex: true,
+    }}
+    theme={theme}
 >
-  <div class="container-page py-12">
-    <h1 class="text-2xl md:text-3xl font-heading font-normal text-base-content mb-8">My Account</h1>
+    <div class="container-page py-12">
+        <h1
+            class="text-2xl md:text-3xl font-heading font-normal text-base-content mb-8"
+        >
+            My Account
+        </h1>
 
-    <div class="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-8">
-      <AccountNav />
+        <div class="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-8">
+            <AccountNav />
 
-      <div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div class="p-6 bg-base-200 rounded-lg">
-            <Icon name="package" size="lg" class="text-primary mb-3" />
-            <h3 class="font-normal text-base-content">Order History</h3>
-            <p class="text-sm text-base-300 mt-1">View and track your orders</p>
-            <a href="/account/orders" class="text-sm text-primary hover:underline mt-2 inline-block">View Orders</a>
-          </div>
-          <div class="p-6 bg-base-200 rounded-lg">
-            <Icon name="mapPin" size="lg" class="text-primary mb-3" />
-            <h3 class="font-normal text-base-content">Addresses</h3>
-            <p class="text-sm text-base-300 mt-1">Manage shipping addresses</p>
-            <a href="/account/addresses" class="text-sm text-primary hover:underline mt-2 inline-block">Manage</a>
-          </div>
+            <div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="p-6 bg-base-200 rounded-lg">
+                        <Icon
+                            name="package"
+                            size="lg"
+                            class="text-primary mb-3"
+                        />
+                        <h3 class="font-normal text-base-content">
+                            Order History
+                        </h3>
+                        <p class="text-sm text-base-300 mt-1">
+                            View and track your orders
+                        </p>
+                        <a
+                            href="/account/orders"
+                            class="text-sm text-primary hover:underline mt-2 inline-block"
+                            >View Orders</a
+                        >
+                    </div>
+                    <div class="p-6 bg-base-200 rounded-lg">
+                        <Icon
+                            name="mapPin"
+                            size="lg"
+                            class="text-primary mb-3"
+                        />
+                        <h3 class="font-normal text-base-content">Addresses</h3>
+                        <p class="text-sm text-base-300 mt-1">
+                            Manage shipping addresses
+                        </p>
+                        <a
+                            href="/account/addresses"
+                            class="text-sm text-primary hover:underline mt-2 inline-block"
+                            >Manage</a
+                        >
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </BaseLayout>

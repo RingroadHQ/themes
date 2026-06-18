@@ -1,9 +1,4 @@
-import type {
-  Customer,
-  LoginData,
-  RegisterData,
-  Order,
-} from "../types";
+import type { Customer, LoginData, RegisterData, Order } from "../types";
 import { simulateRequest } from "./client";
 import { generateId } from "../../utils/format";
 
@@ -12,7 +7,7 @@ const accounts = new Map<string, { customer: Customer; password: string }>();
 const tokens = new Map<string, string>(); // token -> customerId
 
 export async function login(
-  data: LoginData
+  data: LoginData,
 ): Promise<{ customer: Customer; token: string } | { error: string }> {
   await simulateRequest(null);
 
@@ -28,7 +23,7 @@ export async function login(
 }
 
 export async function register(
-  data: RegisterData
+  data: RegisterData,
 ): Promise<{ customer: Customer; token: string } | { error: string }> {
   await simulateRequest(null);
 
@@ -67,10 +62,8 @@ export async function getCustomer(token: string): Promise<Customer | null> {
   return null;
 }
 
-export async function getCustomerOrders(
-  _token: string
-): Promise<Order[]> {
+export async function getCustomerOrders(_token: string): Promise<Order[]> {
   await simulateRequest(null);
-  // Return empty orders for now — mock orders would be created at checkout
+  // Return empty orders for now - mock orders would be created at checkout
   return [];
 }

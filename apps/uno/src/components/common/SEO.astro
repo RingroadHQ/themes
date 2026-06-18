@@ -2,22 +2,22 @@
 import type { SEOData } from "../../data/types";
 
 interface Props extends SEOData {
-  type?: "website" | "product" | "article";
-  canonicalURL?: string;
-  noindex?: boolean;
+    type?: "website" | "product" | "article";
+    canonicalURL?: string;
+    noindex?: boolean;
 }
 
 const {
-  title,
-  description,
-  image,
-  type = "website",
-  canonicalURL,
-  noindex = false,
+    title,
+    description,
+    image,
+    type = "website",
+    canonicalURL,
+    noindex = false,
 } = Astro.props;
 
 const siteName = "elora";
-const fullTitle = title.includes(siteName) ? title : `${title} — ${siteName}`;
+const fullTitle = title.includes(siteName) ? title : `${title} - ${siteName}`;
 const ogImage = image || "/favicon.svg";
 const canonical = canonicalURL || new URL(Astro.url.pathname, Astro.url).href;
 ---

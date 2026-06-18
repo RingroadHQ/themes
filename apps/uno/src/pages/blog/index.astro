@@ -7,72 +7,88 @@ import { formatDate } from "../../utils/format";
 
 const posts = await getCollection("blog");
 const sortedPosts = posts.sort(
-  (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime()
+    (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime(),
 );
 const theme = defaultTheme;
 ---
 
 <BaseLayout
-  seo={{
-    title: "Blog — Leather Craft & Style",
-    description: "Read our latest articles about leather craftsmanship, wallet care, and style guides.",
-  }}
-  theme={theme}
+    seo={{
+        title: "Blog - Leather Craft & Style",
+        description:
+            "Read our latest articles about leather craftsmanship, wallet care, and style guides.",
+    }}
+    theme={theme}
 >
-  <div class="container-page py-12">
-    <Breadcrumbs
-      crumbs={[
-        { title: "Home", url: "/" },
-        { title: "Blog", url: "" },
-      ]}
-    />
+    <div class="container-page py-12">
+        <Breadcrumbs
+            crumbs={[
+                { title: "Home", url: "/" },
+                { title: "Blog", url: "" },
+            ]}
+        />
 
-    <h1 class="text-2xl md:text-3xl font-heading font-normal text-base-content mb-8">The Journal</h1>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      {sortedPosts.map((post) => (
-        <a
-          href={`/blog/${post.id}`}
-          class="group flex flex-col bg-base-200 rounded-xl overflow-hidden hover:shadow-lg transition-shadow"
+        <h1
+            class="text-2xl md:text-3xl font-heading font-normal text-base-content mb-8"
         >
-          {post.data.image && (
-            <div class="aspect-video overflow-hidden">
-              <img
-                src={post.data.image}
-                alt={post.data.title}
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                width={800}
-                height={450}
-                loading="lazy"
-              />
-            </div>
-          )}
-          <div class="p-6 flex-1 flex flex-col">
-            {post.data.tags && post.data.tags.length > 0 && (
-              <div class="flex flex-wrap gap-2 mb-3">
-                {post.data.tags.map((tag) => (
-                  <span class="text-xs px-2 py-0.5 bg-base-300/30 text-base-300 rounded-full">{tag}</span>
-                ))}
-              </div>
-            )}
-            <h2 class="text-xl font-heading font-normal text-base-content group-hover:text-primary transition-colors mb-2">
-              {post.data.title}
-            </h2>
-            <p class="text-sm text-base-300 flex-1">{post.data.description}</p>
-            <div class="flex items-center gap-2 mt-4 text-xs text-base-300">
-              <span>{post.data.author}</span>
-              <span>·</span>
-              <time datetime={post.data.publishDate.toISOString()}>
-                {formatDate(post.data.publishDate.toISOString(), {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                })}
-              </time>
-            </div>
-          </div>
-        </a>
-      ))}
+            The Journal
+        </h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {
+                sortedPosts.map((post) => (
+                    <a
+                        href={`/blog/${post.id}`}
+                        class="group flex flex-col bg-base-200 rounded-xl overflow-hidden hover:shadow-lg transition-shadow"
+                    >
+                        {post.data.image && (
+                            <div class="aspect-video overflow-hidden">
+                                <img
+                                    src={post.data.image}
+                                    alt={post.data.title}
+                                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                    width={800}
+                                    height={450}
+                                    loading="lazy"
+                                />
+                            </div>
+                        )}
+                        <div class="p-6 flex-1 flex flex-col">
+                            {post.data.tags && post.data.tags.length > 0 && (
+                                <div class="flex flex-wrap gap-2 mb-3">
+                                    {post.data.tags.map((tag) => (
+                                        <span class="text-xs px-2 py-0.5 bg-base-300/30 text-base-300 rounded-full">
+                                            {tag}
+                                        </span>
+                                    ))}
+                                </div>
+                            )}
+                            <h2 class="text-xl font-heading font-normal text-base-content group-hover:text-primary transition-colors mb-2">
+                                {post.data.title}
+                            </h2>
+                            <p class="text-sm text-base-300 flex-1">
+                                {post.data.description}
+                            </p>
+                            <div class="flex items-center gap-2 mt-4 text-xs text-base-300">
+                                <span>{post.data.author}</span>
+                                <span>·</span>
+                                <time
+                                    datetime={post.data.publishDate.toISOString()}
+                                >
+                                    {formatDate(
+                                        post.data.publishDate.toISOString(),
+                                        {
+                                            year: "numeric",
+                                            month: "short",
+                                            day: "numeric",
+                                        },
+                                    )}
+                                </time>
+                            </div>
+                        </div>
+                    </a>
+                ))
+            }
+        </div>
     </div>
-  </div>
 </BaseLayout>

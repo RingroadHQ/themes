@@ -5,7 +5,7 @@ description: "Get in touch with elora team. We're here to help."
 
 ## We'd Love to Hear From You
 
-Whether you have a question about our products, need help with an order, or just want to talk about leather — we're here.
+Whether you have a question about our products, need help with an order, or just want to talk about leather - we're here.
 
 ### Customer Support
 
@@ -31,7 +31,7 @@ Our workshop and showroom is located at:
 > Portland, OR 97201
 > United States
 
-Visits by appointment only — please email us to schedule.
+Visits by appointment only - please email us to schedule.
 
 ### Follow Us
 

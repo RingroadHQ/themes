@@ -10,51 +10,60 @@ const theme = defaultTheme;
 ---
 
 <BaseLayout
-  seo={{
-    title: "Collections — Browse by Category",
-    description: "Explore our curated collections of premium leather wallets. Find the perfect wallet by style, material, or occasion.",
-  }}
-  theme={theme}
+    seo={{
+        title: "Collections - Browse by Category",
+        description:
+            "Explore our curated collections of premium leather wallets. Find the perfect wallet by style, material, or occasion.",
+    }}
+    theme={theme}
 >
-  <div class="container-page py-6">
-    <Breadcrumbs
-      crumbs={[
-        { title: "Home", url: "/" },
-        { title: "Collections", url: "" },
-      ]}
-    />
-  </div>
-
-  <div class="container-page pb-12">
-    <h1 class="text-2xl md:text-3xl font-heading font-normal text-base-content mb-8">Collections</h1>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {collections.map((collection) => (
-        <a
-          href={`/collections/${collection.handle}`}
-          class="group relative rounded-xl overflow-hidden bg-base-200 aspect-[4/3]"
-        >
-          {collection.image && (
-            <img
-              src={collection.image.src}
-              alt={collection.image.alt}
-              loading="lazy"
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              width={collection.image.width}
-              height={collection.image.height}
-            />
-          )}
-          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-          <div class="absolute bottom-0 left-0 right-0 p-6">
-            <h2 class="text-xl font-heading font-normal text-white mb-1">
-              {collection.title}
-            </h2>
-            <p class="text-white/70 text-sm line-clamp-2">{collection.description}</p>
-            <span class="inline-block mt-3 text-sm text-white/90 font-normal border-b border-white/30 group-hover:border-white/80 transition-colors">
-              View Collection
-            </span>
-          </div>
-        </a>
-      ))}
+    <div class="container-page py-6">
+        <Breadcrumbs
+            crumbs={[
+                { title: "Home", url: "/" },
+                { title: "Collections", url: "" },
+            ]}
+        />
     </div>
-  </div>
+
+    <div class="container-page pb-12">
+        <h1
+            class="text-2xl md:text-3xl font-heading font-normal text-base-content mb-8"
+        >
+            Collections
+        </h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {
+                collections.map((collection) => (
+                    <a
+                        href={`/collections/${collection.handle}`}
+                        class="group relative rounded-xl overflow-hidden bg-base-200 aspect-[4/3]"
+                    >
+                        {collection.image && (
+                            <img
+                                src={collection.image.src}
+                                alt={collection.image.alt}
+                                loading="lazy"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                width={collection.image.width}
+                                height={collection.image.height}
+                            />
+                        )}
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                        <div class="absolute bottom-0 left-0 right-0 p-6">
+                            <h2 class="text-xl font-heading font-normal text-white mb-1">
+                                {collection.title}
+                            </h2>
+                            <p class="text-white/70 text-sm line-clamp-2">
+                                {collection.description}
+                            </p>
+                            <span class="inline-block mt-3 text-sm text-white/90 font-normal border-b border-white/30 group-hover:border-white/80 transition-colors">
+                                View Collection
+                            </span>
+                        </div>
+                    </a>
+                ))
+            }
+        </div>
+    </div>
 </BaseLayout>

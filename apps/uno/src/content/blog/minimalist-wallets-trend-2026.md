@@ -7,7 +7,7 @@ image: "https://picsum.photos/id/40/1200/800"
 tags: ["minimalist", "trends", "lifestyle"]
 ---
 
-The minimalist wallet movement isn't just a trend — it's a response to how we live now. With digital payments, mobile IDs, and the death of cash, the traditional overstuffed wallet is becoming obsolete.
+The minimalist wallet movement isn't just a trend - it's a response to how we live now. With digital payments, mobile IDs, and the death of cash, the traditional overstuffed wallet is becoming obsolete.
 
 ## Why Minimalist Wallets Are Winning
 
@@ -28,7 +28,7 @@ Prefer modern materials? The [Carbon Fiber Minimalist](/products/carbon-fiber-mi
 
 ## How to Downsize
 
-1. Audit your current wallet — pull everything out
+1. Audit your current wallet - pull everything out
 2. Categorize: daily essentials, occasional, and "why is this here?"
 3. Digitize: loyalty cards, insurance cards, and library cards can often go digital
 4. Keep: ID, 2-3 payment cards, and one backup

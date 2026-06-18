@@ -9,22 +9,28 @@ export const prerender = false;
 
 const url = Astro.url;
 const query = url.searchParams.get("q") || "";
-const results = query ? await search(query) : { products: [], collections: [], pages: [], totalResults: 0 };
+const results = query
+    ? await search(query)
+    : { products: [], collections: [], pages: [], totalResults: 0 };
 
 const theme = defaultTheme;
 ---
 
 <BaseLayout
-  seo={{
-    title: query ? `Search: ${query} — elora` : "Search — elora",
-    description: "Search our collection of handcrafted leather wallets.",
-    noindex: true,
-  }}
-  theme={theme}
+    seo={{
+        title: query ? `Search: ${query} - elora` : "Search - elora",
+        description: "Search our collection of handcrafted leather wallets.",
+        noindex: true,
+    }}
+    theme={theme}
 >
-  <div class="container-page py-12">
-    <h1 class="text-2xl md:text-3xl font-heading font-normal text-base-content mb-6">Search</h1>
-    <SearchForm initialQuery={query} class="max-w-xl mb-8" />
-    <SearchResults results={results} query={query} />
-  </div>
+    <div class="container-page py-12">
+        <h1
+            class="text-2xl md:text-3xl font-heading font-normal text-base-content mb-6"
+        >
+            Search
+        </h1>
+        <SearchForm initialQuery={query} class="max-w-xl mb-8" />
+        <SearchResults results={results} query={query} />
+    </div>
 </BaseLayout>

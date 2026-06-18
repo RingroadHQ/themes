@@ -17,7 +17,7 @@ We reserve the right to refuse or cancel any order for any reason. If your order
 
 ## Intellectual Property
 
-All content on this website — including images, text, logos, and designs — is the property of elora and is protected by copyright and trademark laws.
+All content on this website - including images, text, logos, and designs - is the property of elora and is protected by copyright and trademark laws.
 
 ## Limitation of Liability
 

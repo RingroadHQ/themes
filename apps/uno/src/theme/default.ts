@@ -25,7 +25,8 @@ export const defaultTheme: ThemeConfig = {
   },
   typography: {
     headingFont: "'Old Standard TT', ui-serif, Georgia, serif",
-    bodyFont: "'Google Sans Flex', 'Google Sans', ui-sans-serif, system-ui, sans-serif",
+    bodyFont:
+      "'Google Sans Flex', 'Google Sans', ui-sans-serif, system-ui, sans-serif",
     baseSize: "16px",
     headingWeight: "400",
   },
@@ -95,7 +96,7 @@ export const defaultTheme: ThemeConfig = {
   },
   announcement: {
     enabled: true,
-    text: "Free shipping on orders over $75 — Handcrafted with care",
+    text: "Free shipping on orders over $75 - Handcrafted with care",
     link: "/products",
   },
   footer: {
